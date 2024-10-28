@@ -45,7 +45,7 @@ export const Header = () => {
             { label: "Offers", href: "/" },
             { label: "Reward", href: "/" },
             { label: "Activities", href: "/" },
-            { label: "Travel", href: "/" },
+            { label: "Travel", href: "/travel" },
           ]}
         >
           {(item, index) => (

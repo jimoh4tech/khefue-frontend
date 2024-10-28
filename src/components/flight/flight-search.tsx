@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import { Flex, Input, Separator, Text } from "@chakra-ui/react";
 import { SearchableSelect } from "../custom/searchable-select";
 import { AirportOption } from "../../interface/flight.interface";
@@ -12,14 +11,15 @@ import {
   PopoverTrigger,
 } from "../ui/popover";
 import { StepperInput } from "../ui/stepper-input";
-
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { getAirportList } from "../../services/flight.services";
+import { useNavigate } from "react-router-dom";
 
 export const FlightSearch = () => {
   const [airportList, setAirportList] = useState<AirportOption[]>([]);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       requiredCurrency: "NGN",
@@ -33,24 +33,23 @@ export const FlightSearch = () => {
       childs: "1",
       infants: "1",
     },
-    validationSchema: Yup.object({
-      airportOriginCode: Yup.object()
-        .nullable()
-        .required("Airport From selection is required"),
-      airportDestinationCode: Yup.object().nullable().optional(),
-    }),
     onSubmit(values) {
+      console.log("Yes");
       console.log(values);
+      navigate(
+        `/flight?requiredCurrency=${values.requiredCurrency}&journeyType=${values.journeyType}&departureDate=${values.departureDate}&returnDate=${values.returnDate}&airportOriginCode=${values.airportOriginCode}&airportDestinationCode=${values.airportDestinationCode}&class=${values.class}&adults=${values.adults}&infants=${values.infants}&childs=${values.childs}`
+      );
+      // navigate("/flight");
     },
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAirportOriginCodeChange = (selectedOption: any) => {
-    formik.setFieldValue("airportOriginCode", selectedOption); // Ensure formik is setting the correct value
+    formik.setFieldValue("airportOriginCode", selectedOption?.value); // Ensure formik is setting the correct value
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAirportDestinationCodeChange = (selectedOption: any) => {
-    formik.setFieldValue("airportDestinationCode", selectedOption); // Ensure formik is setting the correct value
+    formik.setFieldValue("airportDestinationCode", selectedOption?.value); // Ensure formik is setting the correct value
   };
   const fetchAirportList = async () => {
     try {
@@ -178,8 +177,8 @@ export const FlightSearch = () => {
                         size={"xs"}
                         min={1}
                         name="adults"
-                        value={formik.values.adults}
-                        onChange={formik.handleChange}
+                        // value={formik.values.adults}
+                        // onChange={(val) => formik.setFieldValue("adults", val)}
                       />
                     </Flex>
                     <Flex
@@ -191,8 +190,8 @@ export const FlightSearch = () => {
                         size={"xs"}
                         min={1}
                         name="childs"
-                        value={formik.values.childs}
-                        onChange={formik.handleChange}
+                        // value={formik.values.childs}
+                        // onChange={formik.handleChange}
                       />
                     </Flex>
                     <Flex
@@ -204,8 +203,8 @@ export const FlightSearch = () => {
                         size={"xs"}
                         min={1}
                         name="infants"
-                        value={formik.values.infants}
-                        onChange={formik.handleChange}
+                        // value={formik.values.infants}
+                        // onChange={formik.handleChange}
                       />
                     </Flex>
                   </Flex>
