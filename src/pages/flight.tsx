@@ -1,4 +1,4 @@
-import { Box, Flex, For, Separator, Text } from "@chakra-ui/react";
+import {  Collapsible, Flex, For, Separator, Text } from "@chakra-ui/react";
 import {
   BreadcrumbCurrentLink,
   BreadcrumbLink,
@@ -12,6 +12,8 @@ import {
   NativeSelectField,
   NativeSelectRoot,
 } from "../components/ui/native-select";
+import { Avatar } from "../components/ui/avatar";
+import { GoArrowUpRight } from "react-icons/go";
 
 export const FlightPage = () => {
   return (
@@ -124,13 +126,17 @@ export const FlightPage = () => {
         </Flex>
         <Flex flex={4} direction={"column"} p={5}>
           <Flex direction={"column"} gap={5}>
-            <Flex justifyContent={"space-between"} w={"full"}>
-              <Text>4 Fligt search</Text>
-              <Button colorScheme={"light"}>
+            <Flex
+              justifyContent={"space-between"}
+              w={"full"}
+              alignItems={"center"}
+            >
+              <Text fontSize={"sm"}>4 Fligt search</Text>
+              <Button bgColor={"#e6e4ef"} color={"black"}>
                 Please Secure booking within 29:45
               </Button>
               <NativeSelectRoot size="sm" width="240px">
-                <NativeSelectField>
+                <NativeSelectField border={"none"} bgColor={"#e6e4ef"}>
                   <option value="Recommended">Recommended</option>
                   <option value="Price High to Low">Price High to Low</option>
                   <option value="Price Low to High">Price Low to High</option>
@@ -153,10 +159,11 @@ export const FlightPage = () => {
                     borderWidth="1px"
                     key={index}
                     p="5"
-                    bg={"#A4A4A4"}
+                    bg={"#e6e4ef"}
                     borderRadius={"md"}
                     alignItems={"center"}
                     direction={"column"}
+                    cursor={"pointer"}
                   >
                     <Text>{item.date}</Text>
                     <Text color="fg.muted">{item.price}</Text>
@@ -164,6 +171,118 @@ export const FlightPage = () => {
                 )}
               </For>
             </Flex>
+          </Flex>
+          <Flex px={1} py={5}>
+            <Collapsible.Root>
+              <Flex
+                justifyContent={"space-between"}
+                w={"full"}
+                gap={5}
+                alignItems={"center"}
+                bg={"white"}
+                p={5}
+              >
+                <Flex direction={"column"} gap={5}>
+                  <Flex justifyContent={"space-between"} w={"full"} gap={5}>
+                    <Avatar name="Segun Adebayo" src="/images/res.svg" />
+                    <Flex direction={"column"} gap={2} alignItems={"center"}>
+                      <Text fontSize={"xs"} fontWeight={"bold"}>
+                        14:00
+                      </Text>
+                      <Text fontSize={"xs"} color={"gray.400"}>
+                        SAW
+                      </Text>
+                    </Flex>
+                    <Flex
+                      direction={"column"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Separator w="xs" />
+                      <Text fontSize={"xs"}>Nonstop</Text>
+                    </Flex>
+                    <Flex direction={"column"} gap={2} alignItems={"center"}>
+                      <Text fontSize={"xs"} fontWeight={"bold"}>
+                        22:00
+                      </Text>
+                      <Text fontSize={"xs"} color={"gray.400"}>
+                        STN
+                      </Text>
+                    </Flex>
+                    <Text fontSize={"xs"} w={"10"}>
+                      4h 05m
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent={"space-between"} w={"full"} gap={5}>
+                    <Avatar name="Segun Adebayo" src="/images/res.svg" />
+                    <Flex direction={"column"} gap={2} alignItems={"center"}>
+                      <Text fontSize={"xs"} fontWeight={"bold"}>
+                        14:00
+                      </Text>
+                      <Text fontSize={"xs"} color={"gray.400"}>
+                        SAW
+                      </Text>
+                    </Flex>
+                    <Flex
+                      direction={"column"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Separator w="xs" />
+                      <Text fontSize={"xs"}>Nonstop</Text>
+                    </Flex>
+                    <Flex direction={"column"} gap={2} alignItems={"center"}>
+                      <Text fontSize={"xs"} fontWeight={"bold"}>
+                        22:00
+                      </Text>
+                      <Text fontSize={"xs"} color={"gray.400"}>
+                        STN
+                      </Text>
+                    </Flex>
+                    <Text fontSize={"xs"} w={"10"}>
+                      4h 05m
+                    </Text>
+                  </Flex>
+                </Flex>
+
+                <Separator orientation="vertical" height="25" />
+                <Flex direction={"column"} gap={5} alignItems={"end"}>
+                  <Text fontWeight={"bold"} fontSize={"sm"}>
+                    24 pts or ₦72
+                  </Text>
+                  <Text fontSize={"xs"} color={"gray.400"}>
+                    16 deals
+                  </Text>
+
+                  <Collapsible.Trigger
+                    p="3"
+                    bg={"#370B6F"}
+                    color={"white"}
+                    fontSize={"sm"}
+                    borderRadius={"sm"}
+                    cursor={"pointer"}
+                  >
+                    <Flex alignItems={"center"} gap={2}>
+                      View Deal <GoArrowUpRight />
+                    </Flex>
+                  </Collapsible.Trigger>
+                </Flex>
+              </Flex>
+              <Collapsible.Content>
+                <Flex>
+                  <Flex>
+                    <Flex>
+                      <Text fontWeight={"bold"} fontSize={"sm"}>
+                        Depart • Sat, Mar 26
+                      </Text>
+                      <Text fontSize={"xs"} color={"gray.400"}>
+                        4h 05m
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Flex>
         </Flex>
       </Flex>
