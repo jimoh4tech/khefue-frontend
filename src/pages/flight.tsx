@@ -43,7 +43,7 @@ export const FlightPage = () => {
         <BreadcrumbLink href="#">Review your trip </BreadcrumbLink>
         <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
       </BreadcrumbRoot>
-      <Flex py={5} px={10} bg={"gray.50"}>
+      <Flex py={5} px={10} bg={"gray.50"} justifyContent={"center"}>
         <FlightSearch init={init} />
       </Flex>
       <Flex px={10}>
