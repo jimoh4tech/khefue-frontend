@@ -1,4 +1,4 @@
-import {  Collapsible, Flex, For, Separator, Text } from "@chakra-ui/react";
+import { Collapsible, Flex, For, Separator, Text } from "@chakra-ui/react";
 import {
   BreadcrumbCurrentLink,
   BreadcrumbLink,
@@ -14,8 +14,27 @@ import {
 } from "../components/ui/native-select";
 import { Avatar } from "../components/ui/avatar";
 import { GoArrowUpRight } from "react-icons/go";
+import { StepsItem, StepsList, StepsRoot } from "../components/ui/steps";
+import { VscCircle } from "react-icons/vsc";
+import { useSearchParams } from "react-router-dom";
+import { FlightSearchProps } from "../interface/flight.interface";
 
 export const FlightPage = () => {
+  const [searchParams] = useSearchParams();
+  const init: FlightSearchProps = {
+    requiredCurrency: searchParams.get("requiredCurrency") || "NGN",
+    journeyType: searchParams.get("journeyType") || "Return",
+    departureDate: searchParams.get("departureDate") || "",
+    airportOriginCode: searchParams.get("airportOriginCode") || null,
+    returnDate: searchParams.get("returnDate") || "",
+    airportDestinationCode: searchParams.get("airportDestinationCode") || null,
+    class: searchParams.get("class") || "Economy",
+    adults: searchParams.get("adults") || "1",
+    childs: searchParams.get("childs") || "1",
+    infants: searchParams.get("infants") || "1",
+  };
+
+  console.log(init);
   return (
     <Flex direction="column">
       <BreadcrumbRoot bg={"#F4ECFF"} py={5} px={10}>
@@ -25,7 +44,7 @@ export const FlightPage = () => {
         <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
       </BreadcrumbRoot>
       <Flex py={5} px={10} bg={"gray.50"}>
-        <FlightSearch />
+        <FlightSearch init={init} />
       </Flex>
       <Flex px={10}>
         <Flex flex={1} direction={"column"} bg={"white"}>
@@ -152,6 +171,7 @@ export const FlightPage = () => {
                   { date: "Mon 13, 2012", price: 56.45 },
                   { date: "Mon 13, 2012", price: 56.45 },
                   { date: "Mon 13, 2012", price: 56.45 },
+                  { date: "Mon 13, 2012", price: 56.45 },
                 ]}
               >
                 {(item, index) => (
@@ -173,11 +193,11 @@ export const FlightPage = () => {
             </Flex>
           </Flex>
           <Flex px={1} py={5}>
-            <Collapsible.Root>
+            <Collapsible.Root w={"full"}>
               <Flex
                 justifyContent={"space-between"}
                 w={"full"}
-                gap={5}
+                gap={3}
                 alignItems={"center"}
                 bg={"white"}
                 p={5}
@@ -245,7 +265,7 @@ export const FlightPage = () => {
                   </Flex>
                 </Flex>
 
-                <Separator orientation="vertical" height="25" />
+                <Separator orientation="vertical" height="25" w={"1"} />
                 <Flex direction={"column"} gap={5} alignItems={"end"}>
                   <Text fontWeight={"bold"} fontSize={"sm"}>
                     24 pts or ₦72
@@ -262,23 +282,196 @@ export const FlightPage = () => {
                     borderRadius={"sm"}
                     cursor={"pointer"}
                   >
-                    <Flex alignItems={"center"} gap={2}>
+                    <Flex alignItems={"center"} gap={2} fontWeight={"semibold"}>
                       View Deal <GoArrowUpRight />
                     </Flex>
                   </Collapsible.Trigger>
                 </Flex>
               </Flex>
               <Collapsible.Content>
-                <Flex>
-                  <Flex>
-                    <Flex>
+                <Flex w={"full"} p={2} direction={"column"} gap={3}>
+                  <Flex
+                    w={"full"}
+                    border={"1px solid"}
+                    borderColor={"gray.300"}
+                    p={3}
+                    gap={5}
+                    direction={"column"}
+                    bg={"white"}
+                    borderRadius={"sm"}
+                  >
+                    <Flex justifyContent={"space-between"} w={"full"}>
                       <Text fontWeight={"bold"} fontSize={"sm"}>
                         Depart • Sat, Mar 26
                       </Text>
-                      <Text fontSize={"xs"} color={"gray.400"}>
+                      <Text fontSize={"sm"} color={"gray.400"}>
                         4h 05m
                       </Text>
                     </Flex>
+                    <Separator />
+                    <Flex>
+                      <StepsRoot
+                        defaultValue={1}
+                        count={3}
+                        orientation="vertical"
+                        height="200px"
+                        flex={1}
+                      >
+                        <StepsList>
+                          <StepsItem
+                            index={0}
+                            icon={
+                              <Avatar
+                                name="Segun Adebayo"
+                                src="/images/res.svg"
+                                size={"xs"}
+                                p={1}
+                              />
+                            }
+                          />
+                          <StepsItem
+                            index={1}
+                            icon={
+                              <Avatar
+                                name="Segun Adebayo"
+                                src="/images/plane.svg"
+                                size={"xs"}
+                                p={2}
+                              />
+                            }
+                          />
+                          <StepsItem
+                            index={2}
+                            icon={<VscCircle size={"10px"} />}
+                          />
+                        </StepsList>
+                      </StepsRoot>
+                      <Flex flex={8} w={"full"} direction={"column"} gap={5}>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            Pegasus Airlines 1169
+                          </Text>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            Economy
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            8:25 am Istanbul Sabiha Gokcen (SAW)
+                          </Text>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            Airbus A320neo (Narrow-body jet)
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            4h 05m
+                          </Text>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            Wi-Fi available
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            9:30 am London Stansted (STN)
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                  <Flex
+                    w={"full"}
+                    border={"1px solid"}
+                    borderColor={"gray.300"}
+                    p={3}
+                    gap={5}
+                    direction={"column"}
+                    bg={"white"}
+                    borderRadius={"sm"}
+                  >
+                    <Flex justifyContent={"space-between"} w={"full"}>
+                      <Text fontWeight={"bold"} fontSize={"sm"}>
+                        Return • Fri, 27 May
+                      </Text>
+                      <Text fontSize={"sm"} color={"gray.400"}>
+                        4h 05m
+                      </Text>
+                    </Flex>
+                    <Separator />
+                    <Flex>
+                      <StepsRoot
+                        defaultValue={1}
+                        count={3}
+                        orientation="vertical"
+                        height="200px"
+                        flex={1}
+                      >
+                        <StepsList>
+                          <StepsItem
+                            index={0}
+                            icon={
+                              <Avatar
+                                name="Segun Adebayo"
+                                src="/images/res.svg"
+                                size={"xs"}
+                                p={1}
+                              />
+                            }
+                          />
+                          <StepsItem
+                            index={1}
+                            icon={
+                              <Avatar
+                                name="Segun Adebayo"
+                                src="/images/plane.svg"
+                                size={"xs"}
+                                p={2}
+                              />
+                            }
+                          />
+                          <StepsItem
+                            index={2}
+                            icon={<VscCircle size={"10px"} />}
+                          />
+                        </StepsList>
+                      </StepsRoot>
+                      <Flex flex={8} w={"full"} direction={"column"} gap={5}>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            Pegasus Airlines 1169
+                          </Text>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            Economy
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            8:25 am Istanbul Sabiha Gokcen (SAW)
+                          </Text>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            Airbus A320neo (Narrow-body jet)
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            4h 05m
+                          </Text>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            Wi-Fi available
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent={"space-between"} w={"full"}>
+                          <Text fontWeight={"semibold"} fontSize={"sm"}>
+                            9:30 am London Stansted (STN)
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                  <Flex justifyContent={"end"}>
+                    <Button bg={"#370B6F"} color={"white"}>
+                      Book Now <GoArrowUpRight />
+                    </Button>
                   </Flex>
                 </Flex>
               </Collapsible.Content>

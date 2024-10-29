@@ -41,7 +41,20 @@ export const TravelPage = () => {
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="flight">
-          <FlightSearch />
+          <FlightSearch
+            init={{
+              requiredCurrency: "NGN",
+              journeyType: "Return",
+              departureDate: "",
+              airportOriginCode: null,
+              returnDate: "",
+              airportDestinationCode: null,
+              class: "Economy",
+              adults: "1",
+              childs: "1",
+              infants: "1",
+            }}
+          />
         </Tabs.Content>
         <Tabs.Content value="hotel">Tab 2: Content</Tabs.Content>
         <Tabs.Content value="package">Tab 3: Content</Tabs.Content>

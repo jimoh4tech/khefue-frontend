@@ -11,3 +11,16 @@ export interface SearchableSelectProps {
   name: string;
   value: AirportOption | null;
 }
+
+export interface FlightSearchProps {
+  requiredCurrency: string;
+  journeyType: string;
+  departureDate: string;
+  airportOriginCode: AirportOption | null;
+  returnDate: string;
+  airportDestinationCode: AirportOption | null;
+  class: string;
+  adults: string;
+  childs: string;
+  infants: string;
+}

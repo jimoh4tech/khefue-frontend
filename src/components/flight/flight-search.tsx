@@ -1,6 +1,9 @@
 import { Flex, Input, Separator, Text } from "@chakra-ui/react";
 import { SearchableSelect } from "../custom/searchable-select";
-import { AirportOption } from "../../interface/flight.interface";
+import {
+  AirportOption,
+  FlightSearchProps,
+} from "../../interface/flight.interface";
 import { Button } from "../ui/button";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -14,32 +17,45 @@ import { StepperInput } from "../ui/stepper-input";
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { getAirportList } from "../../services/flight.services";
+import { getAirportList, searchFlight } from "../../services/flight.services";
 import { useNavigate } from "react-router-dom";
 
-export const FlightSearch = () => {
+export const FlightSearch = ({ init }: { init: FlightSearchProps }) => {
   const [airportList, setAirportList] = useState<AirportOption[]>([]);
   const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: {
-      requiredCurrency: "NGN",
-      journeyType: "Return",
-      departureDate: "",
-      airportOriginCode: null,
-      returnDate: "",
-      airportDestinationCode: null,
-      class: "Economy",
-      adults: "1",
-      childs: "1",
-      infants: "1",
-    },
-    onSubmit(values) {
-      console.log("Yes");
-      console.log(values);
-      navigate(
-        `/flight?requiredCurrency=${values.requiredCurrency}&journeyType=${values.journeyType}&departureDate=${values.departureDate}&returnDate=${values.returnDate}&airportOriginCode=${values.airportOriginCode}&airportDestinationCode=${values.airportDestinationCode}&class=${values.class}&adults=${values.adults}&infants=${values.infants}&childs=${values.childs}`
-      );
-      // navigate("/flight");
+    initialValues: init,
+    async onSubmit(values) {
+      console.log();
+      if (window.location.pathname.includes("/travel")) {
+        navigate(
+          `/flight?requiredCurrency=${values.requiredCurrency}&journeyType=${values.journeyType}&departureDate=${values.departureDate}&returnDate=${values.returnDate}&airportOriginCode=${values.airportOriginCode}&airportDestinationCode=${values.airportDestinationCode}&class=${values.class}&adults=${values.adults}&infants=${values.infants}&childs=${values.childs}`
+        );
+      } else {
+        try {
+          const searchObj = {
+            requiredCurrency: "NGN",
+            journeyType: values?.journeyType,
+            class: values?.class,
+            adults: Number(values?.adults || 1),
+            childs: Number(values?.childs || 1),
+            infants: Number(values?.infants || 1),
+            OriginDestinationInfo: [
+              {
+                departureDate: values?.departureDate,
+                // returnDate: values?.returnDate, // In this is journeyType is Rwturn
+                airportOriginCode: values?.airportOriginCode,
+                airportDestinationCode: values?.airportDestinationCode,
+              },
+            ],
+          };
+          console.log({ searchObj });
+          const res = await searchFlight(searchObj);
+          console.log({ values, res });
+        } catch (error) {
+          console.log(error);
+        }
+      }
     },
   });
 
@@ -238,7 +254,7 @@ export const FlightSearch = () => {
               border={"none"}
             >
               <option value="Economy">Economy</option>
-              <option value="FirstClass">FirstClass</option>
+              <option value="First">First</option>
             </NativeSelectField>
           </NativeSelectRoot>
         </Flex>
