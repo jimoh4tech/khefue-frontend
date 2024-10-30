@@ -58,7 +58,10 @@ export interface OriginDestinationOption {
   ResBookDesigText: string;
 }
 
-export type OriginDestinationOptions = OriginDestinationOption[];
+export interface OriginDestinationOptions {
+  OriginDestinationOption: OriginDestinationOption;
+  TotalStops: number;
+}
 
 export interface TotalFare {
   Amount: string;
@@ -108,7 +111,7 @@ export interface AirItineraryFareInfo {
 export interface FareItinerary {
   AirItineraryFareInfo: AirItineraryFareInfo;
   DirectionInd: string;
-  OriginDestinationOptions: OriginDestinationOptions;
+  OriginDestinationOptions: OriginDestinationOptions[];
   SequenceNumber: string;
   TicketType: string;
   ValidatingAirlineCode: string;
@@ -129,4 +132,11 @@ export interface FlightSearchRequest {
   childs?: number;
   infants?: number;
   OriginDestinationInfo: OriginDestinationInfo[];
+}
+
+export interface FlightContextType {
+  airItenaryFlightInfo: FareItinerary[];
+  setAirItenaryFlightInfo: (newItenaries: FareItinerary[]) => void;
+  // sessionID: string;
+  // setSessionID: () => void;
 }

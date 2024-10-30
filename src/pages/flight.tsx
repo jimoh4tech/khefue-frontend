@@ -1,4 +1,4 @@
-import { Collapsible, Flex, For, Separator, Text } from "@chakra-ui/react";
+import { Flex, For, Separator, Text } from "@chakra-ui/react";
 import {
   BreadcrumbCurrentLink,
   BreadcrumbLink,
@@ -10,26 +10,19 @@ import {
   NativeSelectField,
   NativeSelectRoot,
 } from "../components/ui/native-select";
-import { GoArrowUpRight } from "react-icons/go";
 import { useSearchParams } from "react-router-dom";
 import {
   AirportOption,
-  FareItinerary,
   FlightSearchProps,
 } from "../interface/flight.interface";
-import {
-  FlightMoveCard,
-  FlightResponseBreakdownCard,
-} from "../components/flight/flight-move-card";
 import { FlightFilter } from "../components/flight/flight-filter";
-import { useState } from "react";
+import { FlightItenaryInfo } from "../components/flight/flight-itenary-info";
+import { useFlightItenary } from "../hooks/flight.hooks";
 
 export const FlightPage = () => {
   const [searchParams] = useSearchParams();
-  const [airItenaryFlightInfo, setAirItenaryFlightInfo] = useState<
-    FareItinerary[]
-  >([]);
-  const [sessionID, setSessionID] = useState("");
+  const { airItenaryFlightInfo } = useFlightItenary();
+  // const [sessionID, setSessionID] = useState("");
   // const [];
   const init: FlightSearchProps = {
     requiredCurrency: searchParams.get("requiredCurrency") || "NGN",
@@ -59,10 +52,7 @@ export const FlightPage = () => {
         <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
       </BreadcrumbRoot>
       <Flex py={5} px={10} bg={"gray.50"} justifyContent={"center"}>
-        <FlightSearch
-          init={init}
-          setAirItenaryFlightInfo={setAirItenaryFlightInfo}
-        />
+        <FlightSearch init={init} />
       </Flex>
       <Flex px={10}>
         <FlightFilter />
@@ -115,62 +105,7 @@ export const FlightPage = () => {
               </For>
             </Flex>
           </Flex>
-          <Flex px={1} py={5}>
-            <Collapsible.Root w={"full"}>
-              <Flex
-                justifyContent={"space-between"}
-                w={"full"}
-                gap={3}
-                alignItems={"center"}
-                bg={"white"}
-                p={5}
-              >
-                <Flex direction={"column"} gap={5} flex={1}>
-                  <FlightMoveCard />
-                  <FlightMoveCard />
-                </Flex>
-
-                <Separator orientation="vertical" height="28" />
-                <Flex
-                  direction={"column"}
-                  gap={5}
-                  alignItems={"end"}
-                  flexShrink={0}
-                >
-                  <Text fontWeight={"bold"} fontSize={"sm"}>
-                    24 pts or ₦72
-                  </Text>
-                  <Text fontSize={"xs"} color={"gray.400"}>
-                    16 deals
-                  </Text>
-
-                  <Collapsible.Trigger
-                    p="3"
-                    bg={"#370B6F"}
-                    color={"white"}
-                    fontSize={"sm"}
-                    borderRadius={"sm"}
-                    cursor={"pointer"}
-                  >
-                    <Flex alignItems={"center"} gap={2} fontWeight={"semibold"}>
-                      View Deal <GoArrowUpRight />
-                    </Flex>
-                  </Collapsible.Trigger>
-                </Flex>
-              </Flex>
-              <Collapsible.Content>
-                <Flex w={"full"} p={2} direction={"column"} gap={3}>
-                  <FlightResponseBreakdownCard />
-                  <FlightResponseBreakdownCard />
-                  <Flex justifyContent={"end"}>
-                    <Button bg={"#370B6F"} color={"white"}>
-                      Book Now <GoArrowUpRight />
-                    </Button>
-                  </Flex>
-                </Flex>
-              </Collapsible.Content>
-            </Collapsible.Root>
-          </Flex>
+          <FlightItenaryInfo fairItenary={airItenaryFlightInfo[0]} />
         </Flex>
       </Flex>
     </Flex>

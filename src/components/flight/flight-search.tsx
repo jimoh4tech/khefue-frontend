@@ -20,17 +20,19 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { getAirportList, searchFlight } from "../../services/flight.services";
 import { useNavigate } from "react-router-dom";
+import { useFlightItenary } from "../../hooks/flight.hooks";
 
 export const FlightSearch = ({
   init,
-  setAirItenaryFlightInfo,
-  setSessionID,
-}: {
+}: // setAirItenaryFlightInfo,
+// setSessionID,
+{
   init: FlightSearchProps;
-  setSessionID?: (e: string) => void;
-  setAirItenaryFlightInfo?: (e: []) => void;
+  // setSessionID?: (e: string) => void;
+  // setAirItenaryFlightInfo?: (e: []) => void;
 }) => {
   const [airportList, setAirportList] = useState<AirportOption[]>([]);
+  const { setAirItenaryFlightInfo } = useFlightItenary();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: init,
@@ -50,23 +52,33 @@ export const FlightSearch = ({
             OriginDestinationInfo: [
               {
                 departureDate: values?.departureDate,
-                returnDate: values?.returnDate, // In this is journeyType is Rwturn
+                // returnDate: values?.returnDate, // In this is journeyType is Rwturn
                 airportOriginCode: values?.airportOriginCode || "",
                 airportDestinationCode: values?.airportDestinationCode || "",
               },
             ],
           };
+          if (values?.journeyType === "Return")
+            searchObj.OriginDestinationInfo[0].returnDate = values?.returnDate;
           if (values?.childs) searchObj.childs = Number(values.childs);
           if (values?.infants) searchObj.infants = Number(values.infants);
           console.log({ searchObj });
           const res = await searchFlight(searchObj);
-          console.log({ values, res });
-          if (setSessionID)
-            setSessionID(res?.result?.AirSearchResponse?.session_id || "");
-          if (setAirItenaryFlightInfo)
-            setAirItenaryFlightInfo(
-              res?.result?.AirSearchResponse?.FareItineraries || []
-            );
+          console.log({
+            values,
+            res,
+            keep: res?.result?.AirSearchResponse?.AirSearchResult
+              ?.FareItineraries,
+          });
+          setAirItenaryFlightInfo(
+            res?.result?.AirSearchResponse?.AirSearchResult?.FareItineraries
+          );
+          // if (setSessionID)
+          //   setSessionID(res?.result?.AirSearchResponse?.session_id || "");
+          // if (setAirItenaryFlightInfo)
+          //   setAirItenaryFlightInfo(
+          //     res?.result?.AirSearchResponse?.FareItineraries || []
+          //   );
         } catch (error) {
           console.log(error);
         }

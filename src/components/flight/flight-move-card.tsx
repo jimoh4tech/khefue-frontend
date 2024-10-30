@@ -2,17 +2,25 @@ import { Flex, Separator, Text } from "@chakra-ui/react";
 import { Avatar } from "../ui/avatar";
 import { StepsItem, StepsList, StepsRoot } from "../ui/steps";
 import { VscCircle } from "react-icons/vsc";
+import { OriginDestinationOptions } from "../../interface/flight.interface";
 
-export const FlightMoveCard = () => {
+export const FlightMoveCard = ({
+  originDestinationOptions,
+}: {
+  originDestinationOptions: OriginDestinationOptions;
+}) => {
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
       <Avatar name="Segun Adebayo" src="/images/res.svg" />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
-          14:00
+          {originDestinationOptions?.OriginDestinationOption?.FlightSegment[0].DepartureDateTime?.getDate()}
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
-          SAW
+          {
+            originDestinationOptions?.OriginDestinationOption?.FlightSegment[0]
+              .DepartureAirportLocationCode
+          }
         </Text>
       </Flex>
       <Flex

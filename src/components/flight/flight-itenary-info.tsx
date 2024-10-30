@@ -1,0 +1,73 @@
+import { Collapsible, Flex, Separator, Text } from "@chakra-ui/react";
+import {
+  FlightMoveCard,
+  FlightResponseBreakdownCard,
+} from "./flight-move-card";
+import { GoArrowUpRight } from "react-icons/go";
+import { Button } from "../ui/button";
+import { FareItinerary } from "../../interface/flight.interface";
+
+export const FlightItenaryInfo = ({
+  fairItenary,
+}: {
+  fairItenary: FareItinerary;
+}) => {
+  if (!fairItenary) return <></>;
+  return (
+    <Flex px={1} py={5}>
+      <Collapsible.Root w={"full"}>
+        <Flex
+          justifyContent={"space-between"}
+          w={"full"}
+          gap={3}
+          alignItems={"center"}
+          bg={"white"}
+          p={5}
+        >
+          <Flex direction={"column"} gap={5} flex={1}>
+            <FlightMoveCard
+              originDestinationOptions={
+                fairItenary?.OriginDestinationOptions[0]
+              }
+            />
+            {/* <FlightMoveCard /> */}
+          </Flex>
+
+          <Separator orientation="vertical" height="28" />
+          <Flex direction={"column"} gap={5} alignItems={"end"} flexShrink={0}>
+            <Text fontWeight={"bold"} fontSize={"sm"}>
+              24 pts or ₦72
+            </Text>
+            <Text fontSize={"xs"} color={"gray.400"}>
+              16 deals
+            </Text>
+
+            <Collapsible.Trigger
+              p="3"
+              bg={"#370B6F"}
+              color={"white"}
+              fontSize={"sm"}
+              borderRadius={"sm"}
+              cursor={"pointer"}
+            >
+              <Flex alignItems={"center"} gap={2} fontWeight={"semibold"}>
+                View Deal <GoArrowUpRight />
+              </Flex>
+            </Collapsible.Trigger>
+          </Flex>
+        </Flex>
+        <Collapsible.Content>
+          <Flex w={"full"} p={2} direction={"column"} gap={3}>
+            <FlightResponseBreakdownCard />
+            <FlightResponseBreakdownCard />
+            <Flex justifyContent={"end"}>
+              <Button bg={"#370B6F"} color={"white"}>
+                Book Now <GoArrowUpRight />
+              </Button>
+            </Flex>
+          </Flex>
+        </Collapsible.Content>
+      </Collapsible.Root>
+    </Flex>
+  );
+};
