@@ -3,6 +3,7 @@ import { SearchableSelect } from "../custom/searchable-select";
 import {
   AirportOption,
   FlightSearchProps,
+  FlightSearchRequest,
 } from "../../interface/flight.interface";
 import { Button } from "../ui/button";
 import { IoSearch } from "react-icons/io5";
@@ -20,7 +21,15 @@ import { useEffect, useState } from "react";
 import { getAirportList, searchFlight } from "../../services/flight.services";
 import { useNavigate } from "react-router-dom";
 
-export const FlightSearch = ({ init }: { init: FlightSearchProps }) => {
+export const FlightSearch = ({
+  init,
+  setAirItenaryFlightInfo,
+  setSessionID,
+}: {
+  init: FlightSearchProps;
+  setSessionID?: (e: string) => void;
+  setAirItenaryFlightInfo?: (e: []) => void;
+}) => {
   const [airportList, setAirportList] = useState<AirportOption[]>([]);
   const navigate = useNavigate();
   const formik = useFormik({
@@ -33,25 +42,31 @@ export const FlightSearch = ({ init }: { init: FlightSearchProps }) => {
         );
       } else {
         try {
-          const searchObj = {
+          const searchObj: FlightSearchRequest = {
             requiredCurrency: "NGN",
             journeyType: values?.journeyType,
             class: values?.class,
             adults: Number(values?.adults || 1),
-            childs: Number(values?.childs || 1),
-            infants: Number(values?.infants || 1),
             OriginDestinationInfo: [
               {
                 departureDate: values?.departureDate,
-                // returnDate: values?.returnDate, // In this is journeyType is Rwturn
-                airportOriginCode: values?.airportOriginCode,
-                airportDestinationCode: values?.airportDestinationCode,
+                returnDate: values?.returnDate, // In this is journeyType is Rwturn
+                airportOriginCode: values?.airportOriginCode || "",
+                airportDestinationCode: values?.airportDestinationCode || "",
               },
             ],
           };
+          if (values?.childs) searchObj.childs = Number(values.childs);
+          if (values?.infants) searchObj.infants = Number(values.infants);
           console.log({ searchObj });
           const res = await searchFlight(searchObj);
           console.log({ values, res });
+          if (setSessionID)
+            setSessionID(res?.result?.AirSearchResponse?.session_id || "");
+          if (setAirItenaryFlightInfo)
+            setAirItenaryFlightInfo(
+              res?.result?.AirSearchResponse?.FareItineraries || []
+            );
         } catch (error) {
           console.log(error);
         }
@@ -228,7 +243,13 @@ export const FlightSearch = ({ init }: { init: FlightSearchProps }) => {
               </PopoverContent>
             </PopoverRoot>
           </Flex>
-          <Button bg={"#370B6F"} variant="solid" p={5} type="submit">
+          <Button
+            bg={"#370B6F"}
+            variant="solid"
+            p={5}
+            type="submit"
+            loading={formik.isSubmitting}
+          >
             <IoSearch color="white" /> Search
           </Button>
         </Flex>
