@@ -1,6 +1,6 @@
-import { Flex, For, Image, Input } from "@chakra-ui/react";
+import { Box, Flex, For, Image, Input } from "@chakra-ui/react";
 import { InputGroup } from "../ui/input-group";
-import { LuSearch } from "react-icons/lu";
+import { LuMenu, LuSearch } from "react-icons/lu";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { Avatar } from "../ui/avatar";
@@ -17,8 +17,13 @@ export const Header = () => {
         borderTopRadius="2xl"
         bg="white"
       >
-        <Image src="/images/logo.svg" p="1" alt="Khefue Logo" />
-        <Flex alignItems="center" gap={4}>
+        <Box w={"150px"}>
+          <Image src="/images/logo.png" alt="Khefue Logo" />
+        </Box>
+        <Box hideFrom={"md"}>
+          <LuMenu size="30px" color="#28005B" />
+        </Box>
+        <Flex alignItems="center" gap={4} hideBelow={"md"}>
           {" "}
           <InputGroup flex="1" startElement={<LuSearch />}>
             <Input
@@ -38,7 +43,7 @@ export const Header = () => {
           />
         </Flex>
       </Flex>
-      <Flex bg="#370B6F" gapX={8} px="10" py={3} color="white">
+      <Flex bg="#370B6F" gapX={8} px="10" py={3} color="white" hideBelow={"md"}>
         <For
           each={[
             { label: "Home", href: "/" },

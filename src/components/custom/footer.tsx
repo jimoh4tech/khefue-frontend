@@ -8,9 +8,15 @@ export const Footer = () => {
   return (
     <Flex direction={"column"} bg={"#28005B"} color={"#d3d7ea"} gap={10}>
       <Flex p={10}>
-        <Flex gap={5} justifyContent={"space-between"} w={"full"}>
-          <Box>
-            <Image src="/images/logo-dark.svg" alt="logo dark" />
+        <Flex
+          gap={5}
+          justifyContent={"space-between"}
+          w={"full"}
+          direction={"column"}
+          sm={{ flexDirection: "row" }}
+        >
+          <Box w={"150px"}>
+            <Image src="/images/logo-light.png" alt="logo dark" />
           </Box>
           <Flex direction={"column"} gap={5}>
             <Text fontWeight={"semibold"} fontSize={"xs"}>

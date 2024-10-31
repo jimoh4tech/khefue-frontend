@@ -16,10 +16,10 @@ export const TravelPage = () => {
         bgSize={"cover"}
       >
         <Flex direction="column" alignItems="center" gap={3}>
-          <Heading fontWeight="bold" fontSize="4xl">
+          <Heading fontWeight="bold" fontSize={["2xl", "4xl"]}>
             Find Next Place To Visit
           </Heading>
-          <Text fontSize={"sm"}>
+          <Text fontSize={["xs", "sm"]}>
             Discover amzaing places at exclusive deals
           </Text>
         </Flex>

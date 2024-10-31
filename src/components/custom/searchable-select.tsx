@@ -45,7 +45,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
   onChange,
 }) => {
   return (
-    <Box w="200px" m="10px">
+    <Box w="175px" m="10px">
       <Select<AirportOption, false, GroupBase<AirportOption>> // Explicitly set Select type
         options={options}
         placeholder="Select an airport..."

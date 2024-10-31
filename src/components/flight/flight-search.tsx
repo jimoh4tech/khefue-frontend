@@ -115,142 +115,168 @@ export const FlightSearch = () => {
           color={"black"}
           gap={3}
           alignItems={"center"}
+          direction={"column"}
+          lg={{ flexDir: "row" }}
         >
-          <Flex direction="column" gap={2}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Flying From
-            </Text>
-            <SearchableSelect
-              options={AIRPORT_LIST_OPTION}
-              onChange={handleAirportOriginCodeChange}
-              name="airportOriginCode"
-              value={formik.values.airportOriginCode}
-            />
-          </Flex>
-          <Separator orientation="vertical" height="16" />
-          <Flex direction="column" gap={2}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Flying To
-            </Text>
-            <SearchableSelect
-              options={AIRPORT_LIST_OPTION}
-              onChange={handleAirportDestinationCodeChange}
-              name="airportDestinationCode"
-              value={formik.values.airportDestinationCode}
-            />
-          </Flex>
-          <Separator orientation="vertical" height="16" />
-          <Flex direction="column" gap={2}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Depart
-            </Text>
-            <Input
-              type="date"
-              min={new Date().toISOString().split("T")[0]}
-              size="xs"
-              name="departureDate"
-              value={formik.values.departureDate}
-              onChange={formik.handleChange}
-            />
-          </Flex>
-          <Separator orientation="vertical" height="16" />
+          <Separator hideFrom={"lg"} />
           <Flex
-            direction="column"
-            gap={2}
-            display={`${
-              formik.values.journeyType == "OneWay" ? "none" : "flex"
-            }`}
+            gap={3}
+            alignItems={"start"}
+            direction={"column"}
+            sm={{ flexDirection: "row" }}
+            w={"full"}
           >
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Return
-            </Text>
-            <Input
-              type="date"
-              min={
-                new Date(formik.values.departureDate || new Date().getTime())
-                  .toISOString()
-                  .split("T")[0]
-              }
-              size="xs"
-              name="returnDate"
-              value={formik.values.returnDate}
-              onChange={formik.handleChange}
+            <Flex direction="column" gap={2}>
+              <Text fontWeight={"semibold"} fontSize={"sm"}>
+                Flying From
+              </Text>
+              <SearchableSelect
+                options={AIRPORT_LIST_OPTION}
+                onChange={handleAirportOriginCodeChange}
+                name="airportOriginCode"
+                value={formik.values.airportOriginCode}
+              />
+            </Flex>
+            <Separator orientation="vertical" height="16" hideBelow={"sm"} />
+            <Separator hideFrom={"sm"} />
+            <Flex direction="column" gap={2}>
+              <Text fontWeight={"semibold"} fontSize={"sm"}>
+                Flying To
+              </Text>
+              <SearchableSelect
+                options={AIRPORT_LIST_OPTION}
+                onChange={handleAirportDestinationCodeChange}
+                name="airportDestinationCode"
+                value={formik.values.airportDestinationCode}
+              />
+            </Flex>
+            <Separator orientation="vertical" height="16" hideBelow={"lg"} />
+          </Flex>
+          <Separator hideFrom={"lg"} />
+          <Flex
+            gap={3}
+            direction={"column"}
+            sm={{ flexDirection: "row" }}
+            w={"full"}
+          >
+            <Flex direction="column" gap={2}>
+              <Text fontWeight={"semibold"} fontSize={"sm"}>
+                Depart
+              </Text>
+              <Input
+                type="date"
+                min={new Date().toISOString().split("T")[0]}
+                size="xs"
+                name="departureDate"
+                value={formik.values.departureDate}
+                onChange={formik.handleChange}
+              />
+            </Flex>
+            <Separator orientation="vertical" height="16" hideBelow={"sm"} />
+            <Separator hideFrom={"sm"} />
+            <Flex
+              direction="column"
+              gap={2}
+              display={`${
+                formik.values.journeyType == "OneWay" ? "none" : "flex"
+              }`}
+            >
+              <Text fontWeight={"semibold"} fontSize={"sm"}>
+                Return
+              </Text>
+              <Input
+                type="date"
+                min={
+                  new Date(formik.values.departureDate || new Date().getTime())
+                    .toISOString()
+                    .split("T")[0]
+                }
+                size="xs"
+                name="returnDate"
+                value={formik.values.returnDate}
+                onChange={formik.handleChange}
+              />
+            </Flex>
+            <Separator
+              orientation="vertical"
+              height="16"
+              display={`${
+                formik.values.journeyType == "OneWay" ? "none" : "flex"
+              }`}
+              hideBelow={"sm"}
             />
+            <Separator hideFrom={"sm"} />
+            <Flex direction="column" gap={2}>
+              <Text fontWeight={"semibold"} fontSize={"sm"}>
+                Travellers
+              </Text>
+              <PopoverRoot>
+                <PopoverTrigger asChild>
+                  <Button size="xs" variant="outline">
+                    {Number(formik.values.adults) +
+                      Number(formik.values.childs) +
+                      Number(formik.values.infants)}{" "}
+                    Travellers
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <Flex direction={"column"} gap={3}>
+                      <Flex
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                      >
+                        <Text fontSize={"sm"}>Adults</Text>
+                        <StepperInput
+                          size={"xs"}
+                          min={1}
+                          name="adults"
+                          // value={formik.values.adults}
+                          // onChange={(val) => formik.setFieldValue("adults", val)}
+                        />
+                      </Flex>
+                      <Flex
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                      >
+                        <Text fontSize={"sm"}>Children</Text>
+                        <StepperInput
+                          size={"xs"}
+                          min={1}
+                          name="childs"
+                          // value={formik.values.childs}
+                          // onChange={formik.handleChange}
+                        />
+                      </Flex>
+                      <Flex
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                      >
+                        <Text fontSize={"sm"}>Infacts</Text>
+                        <StepperInput
+                          size={"xs"}
+                          min={1}
+                          name="infants"
+                          // value={formik.values.infants}
+                          // onChange={formik.handleChange}
+                        />
+                      </Flex>
+                    </Flex>
+                  </PopoverBody>
+                </PopoverContent>
+              </PopoverRoot>
+            </Flex>
           </Flex>
-          <Separator
-            orientation="vertical"
-            height="16"
-            display={`${
-              formik.values.journeyType == "OneWay" ? "none" : "flex"
-            }`}
-          />
-          <Flex direction="column" gap={2}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Travellers
-            </Text>
-            <PopoverRoot>
-              <PopoverTrigger asChild>
-                <Button size="xs" variant="outline">
-                  {Number(formik.values.adults) +
-                    Number(formik.values.childs) +
-                    Number(formik.values.infants)}{" "}
-                  Travellers
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverBody>
-                  <Flex direction={"column"} gap={3}>
-                    <Flex
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                    >
-                      <Text fontSize={"sm"}>Adults</Text>
-                      <StepperInput
-                        size={"xs"}
-                        min={1}
-                        name="adults"
-                        // value={formik.values.adults}
-                        // onChange={(val) => formik.setFieldValue("adults", val)}
-                      />
-                    </Flex>
-                    <Flex
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                    >
-                      <Text fontSize={"sm"}>Children</Text>
-                      <StepperInput
-                        size={"xs"}
-                        min={1}
-                        name="childs"
-                        // value={formik.values.childs}
-                        // onChange={formik.handleChange}
-                      />
-                    </Flex>
-                    <Flex
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                    >
-                      <Text fontSize={"sm"}>Infacts</Text>
-                      <StepperInput
-                        size={"xs"}
-                        min={1}
-                        name="infants"
-                        // value={formik.values.infants}
-                        // onChange={formik.handleChange}
-                      />
-                    </Flex>
-                  </Flex>
-                </PopoverBody>
-              </PopoverContent>
-            </PopoverRoot>
-          </Flex>
+          <Separator hideFrom={"lg"} />
           <Button
             bg={"#370B6F"}
             variant="solid"
             p={5}
             type="submit"
             loading={formik.isSubmitting}
+            w={"60"}
+            lg={{ w: "28" }}
           >
             <IoSearch color="white" /> Search
           </Button>
