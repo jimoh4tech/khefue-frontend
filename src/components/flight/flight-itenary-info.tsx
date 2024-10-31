@@ -1,4 +1,4 @@
-import { Collapsible, Flex, Separator, Text } from "@chakra-ui/react";
+import { Collapsible, Flex, FormatNumber, Separator } from "@chakra-ui/react";
 import {
   FlightMoveCard,
   FlightResponseBreakdownCard,
@@ -32,12 +32,23 @@ export const FlightItenaryInfo = ({
 
           <Separator orientation="vertical" height="28" />
           <Flex direction={"column"} gap={5} alignItems={"end"} flexShrink={0}>
-            <Text fontWeight={"bold"} fontSize={"sm"}>
-              24 pts or ₦72
-            </Text>
-            <Text fontSize={"xs"} color={"gray.400"}>
+            {/* <Text fontWeight={"bold"} fontSize={"sm"}>
+              {
+                fairItenary.FareItinerary.AirItineraryFareInfo.ItinTotalFares
+                  .TotalFare.Amount
+              }
+            </Text> */}
+            <FormatNumber
+              value={Number(
+                fairItenary?.FareItinerary?.AirItineraryFareInfo?.ItinTotalFares
+                  ?.TotalFare?.Amount || 0
+              )}
+              style="currency"
+              currency="NGN"
+            />
+            {/* <Text fontSize={"xs"} color={"gray.400"}>
               16 deals
-            </Text>
+            </Text> */}
 
             <Collapsible.Trigger
               p="3"

@@ -11,5 +11,5 @@ export const formatDateIntervalToHours = (
 
   const hours = Math.floor(diff.asHours()); // Get total hours
   const minutes = diff.minutes();
-  return `${hours}:${minutes}`;
+  return `${hours}h ${minutes}m`;
 };
