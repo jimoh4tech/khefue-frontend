@@ -26,11 +26,7 @@ export const FlightItenaryInfo = ({
           p={5}
         >
           <Flex direction={"column"} gap={5} flex={1}>
-            <FlightMoveCard
-              originDestinationOptions={
-                fairItenary?.FareItinerary.OriginDestinationOptions[0]
-              }
-            />
+            <FlightMoveCard fairItenary={fairItenary} />
             {/* <FlightMoveCard /> */}
           </Flex>
 

@@ -2,28 +2,32 @@ import { Flex, Separator, Text } from "@chakra-ui/react";
 import { Avatar } from "../ui/avatar";
 import { StepsItem, StepsList, StepsRoot } from "../ui/steps";
 import { VscCircle } from "react-icons/vsc";
-import { OriginDestinationOptions } from "../../interface/flight.interface";
+import { FareItineraries } from "../../interface/flight.interface";
+import {
+  formatDateIntervalToHours,
+  formatDateToTime,
+} from "../../utils/date-format";
 
 export const FlightMoveCard = ({
-  originDestinationOptions,
+  fairItenary,
 }: {
-  originDestinationOptions: OriginDestinationOptions;
+  fairItenary: FareItineraries;
 }) => {
-  console.log({ originDestinationOptions });
+  const temp = fairItenary?.FareItinerary?.OriginDestinationOptions[0];
+  console.log({ temp });
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
       <Avatar name="Segun Adebayo" src="/images/res.svg" />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
-          {
-            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
-              .DepartureDateTime
-          }
+          {formatDateToTime(
+            temp?.OriginDestinationOption[0]?.FlightSegment?.DepartureDateTime
+          )}
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
           {
-            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
-              .DepartureAirportLocationCode
+            temp?.OriginDestinationOption[0]?.FlightSegment
+              ?.DepartureAirportLocationCode
           }
         </Text>
       </Flex>
@@ -33,18 +37,30 @@ export const FlightMoveCard = ({
         alignItems={"center"}
       >
         <Separator w="xs" />
-        <Text fontSize={"xs"}>Nonstop</Text>
+        <Text fontSize={"xs"}>{`${
+          temp?.TotalStops == 0 ? "Nonstop" : temp?.TotalStops + " stops"
+        }`}</Text>
       </Flex>
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
-          22:00
+          {formatDateToTime(
+            temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
+              ?.ArrivalDateTime
+          )}
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
-          STN
+          {
+            temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
+              ?.ArrivalAirportLocationCode
+          }
         </Text>
       </Flex>
       <Text fontSize={"xs"} w={"10"}>
-        4h 05m
+        {formatDateIntervalToHours(
+          temp?.OriginDestinationOption[0]?.FlightSegment?.DepartureDateTime,
+          temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
+            ?.ArrivalDateTime
+        )}
       </Text>
     </Flex>
   );
