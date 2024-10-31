@@ -9,16 +9,20 @@ export const FlightMoveCard = ({
 }: {
   originDestinationOptions: OriginDestinationOptions;
 }) => {
+  console.log({ originDestinationOptions });
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
       <Avatar name="Segun Adebayo" src="/images/res.svg" />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
-          {originDestinationOptions?.OriginDestinationOption?.FlightSegment[0].DepartureDateTime?.getDate()}
+          {
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+              .DepartureDateTime
+          }
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
           {
-            originDestinationOptions?.OriginDestinationOption?.FlightSegment[0]
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
               .DepartureAirportLocationCode
           }
         </Text>

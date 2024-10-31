@@ -5,13 +5,14 @@ import {
 } from "./flight-move-card";
 import { GoArrowUpRight } from "react-icons/go";
 import { Button } from "../ui/button";
-import { FareItinerary } from "../../interface/flight.interface";
+import { FareItineraries } from "../../interface/flight.interface";
 
 export const FlightItenaryInfo = ({
   fairItenary,
 }: {
-  fairItenary: FareItinerary;
+  fairItenary: FareItineraries;
 }) => {
+  console.log(fairItenary, fairItenary?.FareItinerary);
   if (!fairItenary) return <></>;
   return (
     <Flex px={1} py={5}>
@@ -27,7 +28,7 @@ export const FlightItenaryInfo = ({
           <Flex direction={"column"} gap={5} flex={1}>
             <FlightMoveCard
               originDestinationOptions={
-                fairItenary?.OriginDestinationOptions[0]
+                fairItenary?.FareItinerary.OriginDestinationOptions[0]
               }
             />
             {/* <FlightMoveCard /> */}

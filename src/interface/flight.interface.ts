@@ -27,9 +27,9 @@ export interface FlightSearchProps {
 
 export interface FlightSegment {
   ArrivalAirportLocationCode: string;
-  ArrivalDateTime: Date;
+  ArrivalDateTime: string;
   DepartureAirportLocationCode: string;
-  DepartureDateTime: Date;
+  DepartureDateTime: string;
   MarketingAirlineName: string;
   MarketingAirlineCode: string;
   FlightNumber: string;
@@ -50,7 +50,7 @@ export interface StopQuantityInfo {
   LocationCode: string;
 }
 export interface OriginDestinationOption {
-  FlightSegment: FlightSegment[];
+  FlightSegment: FlightSegment;
   StopQuantity: string;
   StopQuantityInfo: StopQuantityInfo;
   SeatsRemaining: SeatsRemaining;
@@ -59,7 +59,7 @@ export interface OriginDestinationOption {
 }
 
 export interface OriginDestinationOptions {
-  OriginDestinationOption: OriginDestinationOption;
+  OriginDestinationOption: OriginDestinationOption[];
   TotalStops: number;
 }
 
@@ -116,7 +116,9 @@ export interface FareItinerary {
   TicketType: string;
   ValidatingAirlineCode: string;
 }
-
+export interface FareItineraries {
+  FareItinerary: FareItinerary;
+}
 export interface OriginDestinationInfo {
   departureDate: string;
   returnDate?: string;
@@ -135,8 +137,8 @@ export interface FlightSearchRequest {
 }
 
 export interface FlightContextType {
-  airItenaryFlightInfo: FareItinerary[];
-  setAirItenaryFlightInfo: (newItenaries: FareItinerary[]) => void;
+  airItenaryFlightInfo: FareItineraries[];
+  setAirItenaryFlightInfo: (newItenaries: FareItineraries[]) => void;
   // sessionID: string;
   // setSessionID: () => void;
 }
