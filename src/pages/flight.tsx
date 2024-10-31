@@ -5,7 +5,6 @@ import {
   BreadcrumbRoot,
 } from "../components/ui/breadcrumb";
 import { FlightSearch } from "../components/flight/flight-search";
-import { Button } from "../components/ui/button";
 import {
   NativeSelectField,
   NativeSelectRoot,
@@ -70,32 +69,41 @@ export const FlightPage = () => {
   console.log(init);
   return (
     <Flex direction="column">
-      <BreadcrumbRoot bg={"#F4ECFF"} py={5} px={10}>
+      <BreadcrumbRoot bg={"#F4ECFF"} py={5} px={5} lg={{ px: "10" }}>
         <BreadcrumbLink href="#">Choose departing flight</BreadcrumbLink>
         <BreadcrumbLink href="#">Choose returning flight </BreadcrumbLink>
         <BreadcrumbLink href="#">Review your trip </BreadcrumbLink>
         <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
       </BreadcrumbRoot>
-      <Flex py={5} px={10} bg={"gray.50"} justifyContent={"center"}>
+      <Flex
+        py={5}
+        px={5}
+        lg={{ px: "10" }}
+        bg={"gray.50"}
+        justifyContent={"center"}
+      >
         <FlightSearch />
       </Flex>
-      <Flex px={10}>
+      <Flex
+        px={5}
+        lg={{ px: "10" }}
+        direction={"column"}
+        md={{ flexDirection: "row" }}
+      >
         <FlightFilter />
-        <Flex flex={4} direction={"column"} p={5}>
+        <Flex flex={4} direction={"column"} p={2} lg={{ px: "5" }}>
           <Flex direction={"column"} gap={5}>
             <Flex
               justifyContent={"space-between"}
               w={"full"}
               alignItems={"center"}
             >
-              <Text fontSize={"sm"}>
+              <Text fontSize={"sm"} color={"#28005B"}>
                 {" "}
                 {`${airItenaryFlightInfo?.length || 0} flights found`}
               </Text>
-              <Button bgColor={"#e6e4ef"} color={"black"}>
-                Please Secure booking within 29:45
-              </Button>
-              <NativeSelectRoot size="sm" width="240px">
+
+              <NativeSelectRoot size="xs" width="150px">
                 <NativeSelectField border={"none"} bgColor={"#e6e4ef"}>
                   <option value="Recommended">Recommended</option>
                   <option value="Price High to Low">Price High to Low</option>

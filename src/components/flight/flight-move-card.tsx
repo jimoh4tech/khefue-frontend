@@ -22,7 +22,7 @@ export const FlightMoveCard = ({
 }) => {
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
-      <Avatar name="Segun Adebayo" src="/images/res.svg" />
+      <Avatar src="/images/res.svg" hideBelow={"sm"} />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
           {formatDateToTime(
@@ -93,6 +93,7 @@ export const FlightSegementCard = ({
         orientation="vertical"
         height="200px"
         flex={1}
+        hideBelow={"sm"}
       >
         <StepsList>
           <StepsItem
@@ -126,9 +127,6 @@ export const FlightSegementCard = ({
                 ?.DepartureAirportLocationCode
             )}`}
           </Text>
-          <Text fontWeight={"semibold"} fontSize={"xs"}>
-            {originDestinationOption?.FlightSegment?.Eticket ? "Eticket" : ""}
-          </Text>
         </Flex>
         <Flex justifyContent={"space-between"} w={"full"}>
           <Text fontSize={"sm"} color={"gray.400"}>
@@ -138,7 +136,7 @@ export const FlightSegementCard = ({
             )}
           </Text>
           <Text fontWeight={"semibold"} fontSize={"xs"}>
-            Wi-Fi available
+            {originDestinationOption?.FlightSegment?.Eticket ? "Eticket" : ""}
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"} w={"full"}>
@@ -174,13 +172,13 @@ export const FlightResponseBreakdownCard = ({
       borderRadius={"sm"}
     >
       <Flex justifyContent={"space-between"} w={"full"}>
-        <Text fontWeight={"bold"} fontSize={"sm"}>
+        <Text fontWeight={"bold"} fontSize={"xs"} sm={{ fontSize: "sm" }}>
           {`${type === 0 ? "Depart" : "Return"} • ${formatDateToDayMonth(
             originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
               ?.DepartureDateTime
           )}`}
         </Text>
-        <Text fontSize={"sm"} color={"gray.400"}>
+        <Text fontSize={"xs"} sm={{ fontSize: "sm" }} color={"gray.400"}>
           {formatDateIntervalToHours(
             originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
               ?.DepartureDateTime,

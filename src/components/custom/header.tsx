@@ -12,16 +12,18 @@ export const Header = () => {
       <Flex
         justify="space-between"
         w="full"
-        px={10}
+        px={5}
         py={5}
+        md={{ px: "10" }}
         borderTopRadius="2xl"
         bg="white"
+        alignItems={"center"}
       >
         <Box w={"150px"}>
           <Image src="/images/logo.png" alt="Khefue Logo" />
         </Box>
         <Box hideFrom={"md"}>
-          <LuMenu size="30px" color="#28005B" />
+          <LuMenu size="32px" color="#28005B" />
         </Box>
         <Flex alignItems="center" gap={4} hideBelow={"md"}>
           {" "}

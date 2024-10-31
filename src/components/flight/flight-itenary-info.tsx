@@ -15,7 +15,7 @@ export const FlightItenaryInfo = ({
 }) => {
   if (!fairItenary) return <></>;
   return (
-    <Flex px={1} py={5}>
+    <Flex py={5}>
       <Collapsible.Root w={"full"}>
         <Flex
           justifyContent={"space-between"}
@@ -23,7 +23,10 @@ export const FlightItenaryInfo = ({
           gap={3}
           alignItems={"center"}
           bg={"white"}
-          p={5}
+          p={2}
+          md={{ p: "5" }}
+          direction={"column"}
+          sm={{ flexDirection: "row" }}
         >
           <Flex direction={"column"} gap={5} flex={4}>
             {fairItenary?.FareItinerary?.OriginDestinationOptions.map(
@@ -33,8 +36,13 @@ export const FlightItenaryInfo = ({
             )}
           </Flex>
 
-          <Separator orientation="vertical" height="28" />
-          <Flex direction={"column"} gap={5} alignItems={"end"} flex={1}>
+          <Separator orientation="vertical" height="28" hideBelow={"sm"} />
+          <Separator hideFrom={"sm"} />
+          <Flex
+            gap={5}
+            alignItems={"center"}
+            sm={{ flexDirection: "column", alignItems: "end" }}
+          >
             <Text fontWeight={"bold"} fontSize={"sm"}>
               {formatToNaira(
                 fairItenary.FareItinerary.AirItineraryFareInfo.ItinTotalFares
@@ -57,7 +65,12 @@ export const FlightItenaryInfo = ({
               borderRadius={"sm"}
               cursor={"pointer"}
             >
-              <Flex alignItems={"center"} gap={2} fontWeight={"semibold"}>
+              <Flex
+                alignItems={"center"}
+                gap={2}
+                fontWeight={"semibold"}
+                fontSize={"xs"}
+              >
                 View Deal <GoArrowUpRight />
               </Flex>
             </Collapsible.Trigger>

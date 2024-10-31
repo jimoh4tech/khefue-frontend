@@ -158,6 +158,7 @@ export const FlightSearch = () => {
             direction={"column"}
             sm={{ flexDirection: "row" }}
             w={"full"}
+            justifyContent={"space-between"}
           >
             <Flex direction="column" gap={2}>
               <Text fontWeight={"semibold"} fontSize={"sm"}>
@@ -205,7 +206,12 @@ export const FlightSearch = () => {
               }`}
               hideBelow={"sm"}
             />
-            <Separator hideFrom={"sm"} />
+            <Separator
+              hideFrom={"sm"}
+              display={`${
+                formik.values.journeyType == "OneWay" ? "none" : "flex"
+              }`}
+            />
             <Flex direction="column" gap={2}>
               <Text fontWeight={"semibold"} fontSize={"sm"}>
                 Travellers
