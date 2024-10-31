@@ -4,6 +4,14 @@ export interface AirportOption {
   label: string;
 }
 
+export interface AriportList {
+  AirportCode: string;
+  AirportName: string;
+  City: string;
+  Country: string;
+  Latitude: string | null;
+  Longitude: string | null;
+}
 // Props for the SearchableSelect component
 export interface SearchableSelectProps {
   options: AirportOption[];
@@ -137,8 +145,19 @@ export interface FlightSearchRequest {
 }
 
 export interface FlightContextType {
-  airItenaryFlightInfo: FareItineraries[];
-  setAirItenaryFlightInfo: (newItenaries: FareItineraries[]) => void;
-  // sessionID: string;
-  // setSessionID: () => void;
+  airItenaryFlightInfo: FareItineraries[] | null;
+  searchObj: FlightSearchProps | null;
+  sessionId: string;
+  setAirItenaryFlightInfo: (newItenaries: FareItineraries[] | null) => void;
+  setSearchObj: (searchObj: FlightSearchProps) => void;
+  setSessionId: (sessionId: string) => void;
 }
+
+export const defaultValues: FlightContextType = {
+  airItenaryFlightInfo: [],
+  searchObj: null,
+  sessionId: "",
+  setAirItenaryFlightInfo: () => {},
+  setSearchObj: () => {},
+  setSessionId: () => {},
+};

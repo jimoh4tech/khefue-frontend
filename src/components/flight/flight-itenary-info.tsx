@@ -1,4 +1,4 @@
-import { Collapsible, Flex, FormatNumber, Separator } from "@chakra-ui/react";
+import { Collapsible, Flex, Separator, Text } from "@chakra-ui/react";
 import {
   FlightMoveCard,
   FlightResponseBreakdownCard,
@@ -6,13 +6,13 @@ import {
 import { GoArrowUpRight } from "react-icons/go";
 import { Button } from "../ui/button";
 import { FareItineraries } from "../../interface/flight.interface";
+import { formatToNaira } from "../../utils/currrent-format";
 
 export const FlightItenaryInfo = ({
   fairItenary,
 }: {
   fairItenary: FareItineraries;
 }) => {
-  console.log(fairItenary, fairItenary?.FareItinerary);
   if (!fairItenary) return <></>;
   return (
     <Flex px={1} py={5}>
@@ -25,30 +25,29 @@ export const FlightItenaryInfo = ({
           bg={"white"}
           p={5}
         >
-          <Flex direction={"column"} gap={5} flex={1}>
-            <FlightMoveCard fairItenary={fairItenary} />
-            {/* <FlightMoveCard /> */}
+          <Flex direction={"column"} gap={5} flex={4}>
+            {fairItenary?.FareItinerary?.OriginDestinationOptions.map(
+              (origin, idx) => (
+                <FlightMoveCard key={idx} originDestinationOptions={origin} />
+              )
+            )}
           </Flex>
 
           <Separator orientation="vertical" height="28" />
-          <Flex direction={"column"} gap={5} alignItems={"end"} flexShrink={0}>
-            {/* <Text fontWeight={"bold"} fontSize={"sm"}>
-              {
+          <Flex direction={"column"} gap={5} alignItems={"end"} flex={1}>
+            <Text fontWeight={"bold"} fontSize={"sm"}>
+              {formatToNaira(
                 fairItenary.FareItinerary.AirItineraryFareInfo.ItinTotalFares
                   .TotalFare.Amount
-              }
-            </Text> */}
-            <FormatNumber
-              value={Number(
-                fairItenary?.FareItinerary?.AirItineraryFareInfo?.ItinTotalFares
-                  ?.TotalFare?.Amount || 0
               )}
-              style="currency"
-              currency="NGN"
-            />
-            {/* <Text fontSize={"xs"} color={"gray.400"}>
-              16 deals
-            </Text> */}
+            </Text>
+
+            <Text fontSize={"xs"} color={"gray.400"}>
+              {fairItenary?.FareItinerary?.AirItineraryFareInfo?.IsRefundable ==
+              "No"
+                ? "Non Refundable"
+                : "Refundable"}
+            </Text>
 
             <Collapsible.Trigger
               p="3"
@@ -66,8 +65,15 @@ export const FlightItenaryInfo = ({
         </Flex>
         <Collapsible.Content>
           <Flex w={"full"} p={2} direction={"column"} gap={3}>
-            <FlightResponseBreakdownCard />
-            <FlightResponseBreakdownCard />
+            {fairItenary.FareItinerary.OriginDestinationOptions.map(
+              (origin, idx) => (
+                <FlightResponseBreakdownCard
+                  key={idx}
+                  type={idx}
+                  originDestinationOptions={origin}
+                />
+              )
+            )}
             <Flex justifyContent={"end"}>
               <Button bg={"#370B6F"} color={"white"}>
                 Book Now <GoArrowUpRight />

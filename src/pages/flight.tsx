@@ -1,4 +1,4 @@
-import { Flex, For, Separator, Text } from "@chakra-ui/react";
+import { Flex, Separator, Stack, Text } from "@chakra-ui/react";
 import {
   BreadcrumbCurrentLink,
   BreadcrumbLink,
@@ -18,6 +18,31 @@ import {
 import { FlightFilter } from "../components/flight/flight-filter";
 import { FlightItenaryInfo } from "../components/flight/flight-itenary-info";
 import { useFlightItenary } from "../hooks/flight.hooks";
+import { Skeleton } from "../components/ui/skeleton";
+import { EmptyState } from "../components/ui/empty-state";
+import { MdFlightTakeoff } from "react-icons/md";
+
+export const FlightSkeleton = () => {
+  return (
+    <Stack gap={5}>
+      <Skeleton height="150px" />
+      <Skeleton height="150px" />
+      <Skeleton height="150px" />
+      <Skeleton height="150px" />
+      <Skeleton height="150px" />
+    </Stack>
+  );
+};
+
+export const EmptyFlight = () => {
+  return (
+    <EmptyState
+      icon={<MdFlightTakeoff />}
+      title="Try again!"
+      description="Flights not found for the given search condition."
+    />
+  );
+};
 
 export const FlightPage = () => {
   const [searchParams] = useSearchParams();
@@ -52,7 +77,7 @@ export const FlightPage = () => {
         <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
       </BreadcrumbRoot>
       <Flex py={5} px={10} bg={"gray.50"} justifyContent={"center"}>
-        <FlightSearch init={init} />
+        <FlightSearch />
       </Flex>
       <Flex px={10}>
         <FlightFilter />
@@ -63,7 +88,10 @@ export const FlightPage = () => {
               w={"full"}
               alignItems={"center"}
             >
-              <Text fontSize={"sm"}>4 Fligt search</Text>
+              <Text fontSize={"sm"}>
+                {" "}
+                {`${airItenaryFlightInfo?.length || 0} flights found`}
+              </Text>
               <Button bgColor={"#e6e4ef"} color={"black"}>
                 Please Secure booking within 29:45
               </Button>
@@ -76,36 +104,16 @@ export const FlightPage = () => {
               </NativeSelectRoot>
             </Flex>
             <Separator />
-            <Flex gap={3}>
-              <For
-                each={[
-                  { date: "Mon 13, 2012", price: 34.22 },
-                  { date: "Mon 13, 2012", price: 44.53 },
-                  { date: "Mon 13, 2012", price: 56.45 },
-                  { date: "Mon 13, 2012", price: 56.45 },
-                  { date: "Mon 13, 2012", price: 56.45 },
-                  { date: "Mon 13, 2012", price: 56.45 },
-                ]}
-              >
-                {(item, index) => (
-                  <Flex
-                    borderWidth="1px"
-                    key={index}
-                    p="5"
-                    bg={"#e6e4ef"}
-                    borderRadius={"md"}
-                    alignItems={"center"}
-                    direction={"column"}
-                    cursor={"pointer"}
-                  >
-                    <Text>{item.date}</Text>
-                    <Text color="fg.muted">{item.price}</Text>
-                  </Flex>
-                )}
-              </For>
-            </Flex>
           </Flex>
-          <FlightItenaryInfo fairItenary={airItenaryFlightInfo[0]} />
+          {!airItenaryFlightInfo ? (
+            <FlightSkeleton />
+          ) : airItenaryFlightInfo.length === 0 ? (
+            <EmptyFlight />
+          ) : (
+            airItenaryFlightInfo?.map((itenary, idx) => (
+              <FlightItenaryInfo key={idx} fairItenary={itenary} />
+            ))
+          )}
         </Flex>
       </Flex>
     </Flex>

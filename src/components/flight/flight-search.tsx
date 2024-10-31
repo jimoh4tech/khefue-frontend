@@ -1,10 +1,6 @@
 import { Flex, Input, Separator, Text } from "@chakra-ui/react";
 import { SearchableSelect } from "../custom/searchable-select";
-import {
-  AirportOption,
-  FlightSearchProps,
-  FlightSearchRequest,
-} from "../../interface/flight.interface";
+import { FlightSearchRequest } from "../../interface/flight.interface";
 import { Button } from "../ui/button";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -17,71 +13,85 @@ import {
 import { StepperInput } from "../ui/stepper-input";
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
-import { getAirportList, searchFlight } from "../../services/flight.services";
+import { searchFlight } from "../../services/flight.services";
 import { useNavigate } from "react-router-dom";
 import { useFlightItenary } from "../../hooks/flight.hooks";
+import { AIRPORT_LIST_OPTION } from "../../utils/airport-list";
+import { toaster } from "../ui/toaster";
 
-export const FlightSearch = ({
-  init,
-}: // setAirItenaryFlightInfo,
-// setSessionID,
-{
-  init: FlightSearchProps;
-  // setSessionID?: (e: string) => void;
-  // setAirItenaryFlightInfo?: (e: []) => void;
-}) => {
-  const [airportList, setAirportList] = useState<AirportOption[]>([]);
-  const { setAirItenaryFlightInfo } = useFlightItenary();
+export const FlightSearch = () => {
+  const { setAirItenaryFlightInfo, setSearchObj, setSessionId, searchObj } =
+    useFlightItenary();
   const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: init,
+    initialValues: {
+      requiredCurrency: searchObj?.requiredCurrency || "NGN",
+      journeyType: searchObj?.journeyType || "Return",
+      departureDate: searchObj?.departureDate || "",
+      airportOriginCode: searchObj?.airportOriginCode || null,
+      returnDate: searchObj?.returnDate || "",
+      airportDestinationCode: searchObj?.airportDestinationCode || null,
+      class: searchObj?.class || "Economy",
+      adults: searchObj?.adults || "1",
+      childs: searchObj?.childs || "0",
+      infants: searchObj?.infants || "0",
+    },
     async onSubmit(values) {
-      console.log();
-      if (window.location.pathname.includes("/travel")) {
-        navigate(
-          `/flight?requiredCurrency=${values.requiredCurrency}&journeyType=${values.journeyType}&departureDate=${values.departureDate}&returnDate=${values.returnDate}&airportOriginCode=${values.airportOriginCode}&airportDestinationCode=${values.airportDestinationCode}&class=${values.class}&adults=${values.adults}&infants=${values.infants}&childs=${values.childs}`
+      setAirItenaryFlightInfo(null);
+      try {
+        const searchObj: FlightSearchRequest = {
+          requiredCurrency: "NGN",
+          journeyType: values?.journeyType,
+          class: values?.class,
+          adults: Number(values?.adults || 1),
+          OriginDestinationInfo: [
+            {
+              departureDate: values?.departureDate,
+              airportOriginCode: values?.airportOriginCode || "",
+              airportDestinationCode: values?.airportDestinationCode || "",
+            },
+          ],
+        };
+        if (values?.journeyType === "Return")
+          searchObj.OriginDestinationInfo[0].returnDate = values?.returnDate;
+        if (values?.childs && values.childs !== "0")
+          searchObj.childs = Number(values.childs);
+        if (values?.infants && values.infants !== "0")
+          searchObj.infants = Number(values.infants);
+        console.log({ searchObj });
+        setSearchObj(values);
+        const res = await searchFlight(searchObj);
+        console.log({
+          values,
+          res,
+          keep: res?.result?.AirSearchResponse?.AirSearchResult
+            ?.FareItineraries,
+        });
+        setAirItenaryFlightInfo(
+          res?.result?.AirSearchResponse?.AirSearchResult?.FareItineraries
         );
-      } else {
-        try {
-          const searchObj: FlightSearchRequest = {
-            requiredCurrency: "NGN",
-            journeyType: values?.journeyType,
-            class: values?.class,
-            adults: Number(values?.adults || 1),
-            OriginDestinationInfo: [
-              {
-                departureDate: values?.departureDate,
-                // returnDate: values?.returnDate, // In this is journeyType is Rwturn
-                airportOriginCode: values?.airportOriginCode || "",
-                airportDestinationCode: values?.airportDestinationCode || "",
-              },
-            ],
-          };
-          if (values?.journeyType === "Return")
-            searchObj.OriginDestinationInfo[0].returnDate = values?.returnDate;
-          if (values?.childs) searchObj.childs = Number(values.childs);
-          if (values?.infants) searchObj.infants = Number(values.infants);
-          console.log({ searchObj });
-          const res = await searchFlight(searchObj);
-          console.log({
-            values,
-            res,
-            keep: res?.result?.AirSearchResponse?.AirSearchResult
-              ?.FareItineraries,
+        setSessionId(res?.result?.AirSearchResponse?.session_id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: Error | any) {
+        console.log(error);
+        if (
+          error?.response?.data?.message ==
+          "Flights not found for the given search condition."
+        ) {
+          setAirItenaryFlightInfo([]);
+          toaster.create({
+            title: `Flights not found for the given search condition.`,
+            type: "info",
           });
-          setAirItenaryFlightInfo(
-            res?.result?.AirSearchResponse?.AirSearchResult?.FareItineraries
-          );
-          // if (setSessionID)
-          //   setSessionID(res?.result?.AirSearchResponse?.session_id || "");
-          // if (setAirItenaryFlightInfo)
-          //   setAirItenaryFlightInfo(
-          //     res?.result?.AirSearchResponse?.FareItineraries || []
-          //   );
-        } catch (error) {
-          console.log(error);
+        } else {
+          toaster.create({
+            title: `Invalid search parameter. Kindly retry!`,
+            type: "error",
+          });
         }
+      }
+      if (window.location.pathname.includes("/travel")) {
+        navigate("/flight");
       }
     },
   });
@@ -94,26 +104,6 @@ export const FlightSearch = ({
   const handleAirportDestinationCodeChange = (selectedOption: any) => {
     formik.setFieldValue("airportDestinationCode", selectedOption?.value); // Ensure formik is setting the correct value
   };
-  const fetchAirportList = async () => {
-    try {
-      const res = await getAirportList();
-      console.log(res?.result?.docs);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const arr: AirportOption[] = res?.result?.docs?.map((e: any) => {
-        return {
-          value: e.AirportCode,
-          label: `${e.AirportCode} - ${e.AirportName} - ${e.City}, ${e.Country}`,
-        };
-      });
-      console.log(arr);
-      setAirportList(arr);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchAirportList();
-  }, []);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -131,7 +121,7 @@ export const FlightSearch = ({
               Flying From
             </Text>
             <SearchableSelect
-              options={airportList}
+              options={AIRPORT_LIST_OPTION}
               onChange={handleAirportOriginCodeChange}
               name="airportOriginCode"
               value={formik.values.airportOriginCode}
@@ -143,7 +133,7 @@ export const FlightSearch = ({
               Flying To
             </Text>
             <SearchableSelect
-              options={airportList}
+              options={AIRPORT_LIST_OPTION}
               onChange={handleAirportDestinationCodeChange}
               name="airportDestinationCode"
               value={formik.values.airportDestinationCode}

@@ -2,31 +2,37 @@ import { Flex, Separator, Text } from "@chakra-ui/react";
 import { Avatar } from "../ui/avatar";
 import { StepsItem, StepsList, StepsRoot } from "../ui/steps";
 import { VscCircle } from "react-icons/vsc";
-import { FareItineraries } from "../../interface/flight.interface";
+import {
+  OriginDestinationOption,
+  OriginDestinationOptions,
+} from "../../interface/flight.interface";
 import {
   formatDateIntervalToHours,
+  formatDateTo12Time,
+  formatDateToDayMonth,
   formatDateToTime,
 } from "../../utils/date-format";
+import { getFlightClassFromCabinCode } from "../../utils/flight";
+import { getAirportDetailsFromCode } from "../../utils/airport-list";
 
 export const FlightMoveCard = ({
-  fairItenary,
+  originDestinationOptions,
 }: {
-  fairItenary: FareItineraries;
+  originDestinationOptions: OriginDestinationOptions;
 }) => {
-  const temp = fairItenary?.FareItinerary?.OriginDestinationOptions[0];
-  console.log({ temp });
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
       <Avatar name="Segun Adebayo" src="/images/res.svg" />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
           {formatDateToTime(
-            temp?.OriginDestinationOption[0]?.FlightSegment?.DepartureDateTime
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+              ?.DepartureDateTime
           )}
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
           {
-            temp?.OriginDestinationOption[0]?.FlightSegment
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
               ?.DepartureAirportLocationCode
           }
         </Text>
@@ -36,37 +42,126 @@ export const FlightMoveCard = ({
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Separator w="xs" />
+        <Separator w="20" />
         <Text fontSize={"xs"}>{`${
-          temp?.TotalStops == 0 ? "Nonstop" : temp?.TotalStops + " stops"
+          originDestinationOptions?.TotalStops == 0
+            ? "Nonstop"
+            : originDestinationOptions?.TotalStops == 1
+            ? originDestinationOptions?.TotalStops + " Stop"
+            : originDestinationOptions?.TotalStops + " Stops"
         }`}</Text>
       </Flex>
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
           {formatDateToTime(
-            temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
-              ?.ArrivalDateTime
+            originDestinationOptions?.OriginDestinationOption[
+              originDestinationOptions?.TotalStops || 0
+            ]?.FlightSegment?.ArrivalDateTime
           )}
         </Text>
         <Text fontSize={"xs"} color={"gray.400"}>
           {
-            temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
-              ?.ArrivalAirportLocationCode
+            originDestinationOptions?.OriginDestinationOption[
+              originDestinationOptions?.TotalStops || 0
+            ]?.FlightSegment?.ArrivalAirportLocationCode
           }
         </Text>
       </Flex>
-      <Text fontSize={"xs"} w={"10"}>
+      <Text fontSize={"xs"} w={"12"}>
         {formatDateIntervalToHours(
-          temp?.OriginDestinationOption[0]?.FlightSegment?.DepartureDateTime,
-          temp?.OriginDestinationOption[temp?.TotalStops || 0]?.FlightSegment
-            ?.ArrivalDateTime
+          originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+            ?.DepartureDateTime,
+          originDestinationOptions?.OriginDestinationOption[
+            originDestinationOptions?.TotalStops || 0
+          ]?.FlightSegment?.ArrivalDateTime
         )}
       </Text>
     </Flex>
   );
 };
 
-export const FlightResponseBreakdownCard = () => {
+export const FlightSegementCard = ({
+  originDestinationOption,
+}: {
+  originDestinationOption: OriginDestinationOption;
+}) => {
+  return (
+    <Flex>
+      <StepsRoot
+        defaultValue={1}
+        count={3}
+        orientation="vertical"
+        height="200px"
+        flex={1}
+      >
+        <StepsList>
+          <StepsItem
+            index={0}
+            icon={<Avatar src="/images/res.svg" size={"xs"} p={1} />}
+          />
+          <StepsItem
+            index={1}
+            icon={<Avatar src="/images/plane.svg" size={"xs"} p={2} />}
+          />
+          <StepsItem index={2} icon={<VscCircle size={"10px"} />} />
+        </StepsList>
+      </StepsRoot>
+      <Flex flex={8} w={"full"} direction={"column"} gap={5}>
+        <Flex justifyContent={"space-between"} w={"full"}>
+          <Text fontSize={"sm"} color={"gray.400"}>
+            {`${originDestinationOption?.FlightSegment?.MarketingAirlineName} ${originDestinationOption?.FlightSegment?.FlightNumber}`}
+          </Text>
+          <Text fontSize={"sm"} color={"gray.400"}>
+            {getFlightClassFromCabinCode(
+              originDestinationOption?.FlightSegment?.CabinClassCode
+            )}
+          </Text>
+        </Flex>
+        <Flex justifyContent={"space-between"} w={"full"}>
+          <Text fontWeight={"semibold"} fontSize={"xs"}>
+            {`${formatDateTo12Time(
+              originDestinationOption?.FlightSegment?.DepartureDateTime
+            )} ${getAirportDetailsFromCode(
+              originDestinationOption?.FlightSegment
+                ?.DepartureAirportLocationCode
+            )}`}
+          </Text>
+          <Text fontWeight={"semibold"} fontSize={"xs"}>
+            {originDestinationOption?.FlightSegment?.Eticket ? "Eticket" : ""}
+          </Text>
+        </Flex>
+        <Flex justifyContent={"space-between"} w={"full"}>
+          <Text fontSize={"sm"} color={"gray.400"}>
+            {formatDateIntervalToHours(
+              originDestinationOption?.FlightSegment?.DepartureDateTime,
+              originDestinationOption?.FlightSegment?.ArrivalDateTime
+            )}
+          </Text>
+          <Text fontWeight={"semibold"} fontSize={"xs"}>
+            Wi-Fi available
+          </Text>
+        </Flex>
+        <Flex justifyContent={"space-between"} w={"full"}>
+          <Text fontWeight={"semibold"} fontSize={"xs"}>
+            {`${formatDateTo12Time(
+              originDestinationOption?.FlightSegment?.ArrivalDateTime
+            )} ${getAirportDetailsFromCode(
+              originDestinationOption?.FlightSegment?.ArrivalAirportLocationCode
+            )}`}
+          </Text>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
+
+export const FlightResponseBreakdownCard = ({
+  originDestinationOptions,
+  type,
+}: {
+  originDestinationOptions: OriginDestinationOptions;
+  type: number;
+}) => {
   return (
     <Flex
       w={"full"}
@@ -80,79 +175,27 @@ export const FlightResponseBreakdownCard = () => {
     >
       <Flex justifyContent={"space-between"} w={"full"}>
         <Text fontWeight={"bold"} fontSize={"sm"}>
-          Depart • Sat, Mar 26
+          {`${type === 0 ? "Depart" : "Return"} • ${formatDateToDayMonth(
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+              ?.DepartureDateTime
+          )}`}
         </Text>
         <Text fontSize={"sm"} color={"gray.400"}>
-          4h 05m
+          {formatDateIntervalToHours(
+            originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+              ?.DepartureDateTime,
+            originDestinationOptions?.OriginDestinationOption[
+              originDestinationOptions?.TotalStops || 0
+            ]?.FlightSegment?.ArrivalDateTime
+          )}
         </Text>
       </Flex>
-      <Separator />
-      <Flex>
-        <StepsRoot
-          defaultValue={1}
-          count={3}
-          orientation="vertical"
-          height="200px"
-          flex={1}
-        >
-          <StepsList>
-            <StepsItem
-              index={0}
-              icon={
-                <Avatar
-                  name="Segun Adebayo"
-                  src="/images/res.svg"
-                  size={"xs"}
-                  p={1}
-                />
-              }
-            />
-            <StepsItem
-              index={1}
-              icon={
-                <Avatar
-                  name="Segun Adebayo"
-                  src="/images/plane.svg"
-                  size={"xs"}
-                  p={2}
-                />
-              }
-            />
-            <StepsItem index={2} icon={<VscCircle size={"10px"} />} />
-          </StepsList>
-        </StepsRoot>
-        <Flex flex={8} w={"full"} direction={"column"} gap={5}>
-          <Flex justifyContent={"space-between"} w={"full"}>
-            <Text fontSize={"sm"} color={"gray.400"}>
-              Pegasus Airlines 1169
-            </Text>
-            <Text fontSize={"sm"} color={"gray.400"}>
-              Economy
-            </Text>
-          </Flex>
-          <Flex justifyContent={"space-between"} w={"full"}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              8:25 am Istanbul Sabiha Gokcen (SAW)
-            </Text>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Airbus A320neo (Narrow-body jet)
-            </Text>
-          </Flex>
-          <Flex justifyContent={"space-between"} w={"full"}>
-            <Text fontSize={"sm"} color={"gray.400"}>
-              4h 05m
-            </Text>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              Wi-Fi available
-            </Text>
-          </Flex>
-          <Flex justifyContent={"space-between"} w={"full"}>
-            <Text fontWeight={"semibold"} fontSize={"sm"}>
-              9:30 am London Stansted (STN)
-            </Text>
-          </Flex>
+      {originDestinationOptions.OriginDestinationOption.map((origin, idx) => (
+        <Flex gap={5} direction={"column"} key={idx}>
+          <Separator />
+          <FlightSegementCard originDestinationOption={origin} />
         </Flex>
-      </Flex>
+      ))}
     </Flex>
   );
 };

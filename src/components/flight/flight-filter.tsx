@@ -1,17 +1,18 @@
 import { Flex, Separator, Text } from "@chakra-ui/react";
 import { Slider } from "../ui/slider";
 import { Checkbox } from "../ui/checkbox";
+import { formatToNaira } from "../../utils/currrent-format";
 
 export const FlightFilter = () => {
   return (
-    <Flex flex={1} direction={"column"} bg={"white"}>
+    <Flex flex={1} direction={"column"} bg={"white"} h={"fit-content"}>
       <Flex direction={"column"} p={5} gap={3}>
         <Text fontSize={"xs"} color={"#370B6F"}>
           Price
         </Text>
         <Flex justifyContent={"space-between"}>
-          <Text fontSize={"xs"}>N0</Text>
-          <Text fontSize={"xs"}>N1000</Text>
+          <Text fontSize={"xs"}>{formatToNaira(0)}</Text>
+          <Text fontSize={"xs"}>{formatToNaira(100000000)}</Text>
         </Flex>
         <Slider defaultValue={[40]} size="sm" color={"#370B6F"} />
       </Flex>
