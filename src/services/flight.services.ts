@@ -71,3 +71,16 @@ export const getBooking = async (id: string) => {
   });
   return response.data;
 };
+
+export const cancelBooking = async (UniqueID: string) => {
+  const response = await axiosInstance.patch(
+    `/travel/get-fare-rule`,
+    { UniqueID },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+};

@@ -148,18 +148,22 @@ export interface FlightContextType {
   airItenaryFlightInfo: FareItineraries[] | null;
   searchObj: FlightSearchProps | null;
   sessionId: string;
+  selectedItenary: number;
   setAirItenaryFlightInfo: (newItenaries: FareItineraries[] | null) => void;
   setSearchObj: (searchObj: FlightSearchProps) => void;
   setSessionId: (sessionId: string) => void;
+  setSelectedItenary: (selectedItenary: number) => void;
 }
 
 export const defaultValues: FlightContextType = {
   airItenaryFlightInfo: [],
   searchObj: null,
   sessionId: "",
+  selectedItenary: 0,
   setAirItenaryFlightInfo: () => {},
   setSearchObj: () => {},
   setSessionId: () => {},
+  setSelectedItenary: () => {},
 };
 export interface FlightPassengerType {
   title: string[];

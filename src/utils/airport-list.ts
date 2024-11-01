@@ -77632,3 +77632,9 @@ export const getAirportDetailsFromCode = (code: string) => {
   );
   return `${airplane?.AirportName} (${airplane?.AirportCode}) - ${airplane?.City}, ${airplane?.Country}`;
 };
+export const getAirportCityFromCode = (code: string) => {
+  const airplane = AIRPORT_LIST.find(
+    (airplane) => airplane.AirportCode === code
+  );
+  return `${airplane?.City} (${airplane?.AirportCode})`;
+};

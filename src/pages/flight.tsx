@@ -32,8 +32,8 @@ export const EmptyFlight = () => {
   return (
     <EmptyState
       icon={<MdFlightTakeoff />}
-      title="Try again!"
-      description="Flights not found for the given search condition."
+      title="We couldn't find any result."
+      description="Try adjusting your search criteria for more result."
     />
   );
 };
@@ -108,7 +108,7 @@ export const FlightPage = () => {
             <EmptyFlight />
           ) : (
             airItenaryFlightInfo?.map((itenary, idx) => (
-              <FlightItenaryInfo key={idx} fairItenary={itenary} />
+              <FlightItenaryInfo key={idx} fairItenary={itenary} index={idx} />
             ))
           )}
         </Flex>

@@ -8,13 +8,52 @@ import { Button } from "../ui/button";
 import { FareItineraries } from "../../interface/flight.interface";
 import { formatToNaira } from "../../utils/currrent-format";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../ui/toaster";
+import { validateFare } from "../../services/flight.services";
+import { useFlightItenary } from "../../hooks/flight.hooks";
+import { useState } from "react";
 
 export const FlightItenaryInfo = ({
   fairItenary,
+  index,
 }: {
   fairItenary: FareItineraries;
+  index: number;
 }) => {
   const navigate = useNavigate();
+  const { sessionId, setSelectedItenary } = useFlightItenary();
+  const [loading, setLoading] = useState(false);
+
+  const validateAndGetFairRule = async () => {
+    setLoading(true);
+    try {
+      const valid = await validateFare(
+        sessionId,
+        fairItenary.FareItinerary.AirItineraryFareInfo.FareSourceCode
+      );
+      console.log(
+        valid?.result?.AirRevalidateResponse?.AirRevalidateResult?.IsValid
+      );
+      if (valid?.result?.AirRevalidateResponse?.AirRevalidateResult?.IsValid) {
+        setSelectedItenary(index);
+        navigate("/flight/checkout");
+      } else {
+        toaster.create({
+          description: "Unable to verify flight at the moment.",
+          type: "info",
+        });
+        setLoading(false);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
+      toaster.create({
+        description: "Flight not available",
+        type: "error",
+      });
+      setLoading(false);
+    }
+  };
   if (!fairItenary) return <></>;
   return (
     <Flex py={5}>
@@ -47,8 +86,8 @@ export const FlightItenaryInfo = ({
           >
             <Text fontWeight={"bold"} fontSize={"sm"}>
               {formatToNaira(
-                fairItenary.FareItinerary.AirItineraryFareInfo.ItinTotalFares
-                  .TotalFare.Amount
+                fairItenary?.FareItinerary?.AirItineraryFareInfo?.ItinTotalFares
+                  ?.TotalFare.Amount
               )}
             </Text>
 
@@ -80,7 +119,7 @@ export const FlightItenaryInfo = ({
         </Flex>
         <Collapsible.Content>
           <Flex w={"full"} p={2} direction={"column"} gap={3}>
-            {fairItenary.FareItinerary.OriginDestinationOptions.map(
+            {fairItenary?.FareItinerary?.OriginDestinationOptions?.map(
               (origin, idx) => (
                 <FlightResponseBreakdownCard
                   key={idx}
@@ -93,7 +132,8 @@ export const FlightItenaryInfo = ({
               <Button
                 bg={"#370B6F"}
                 color={"white"}
-                onClick={() => navigate("/flight/checkout")}
+                loading={loading}
+                onClick={validateAndGetFairRule}
               >
                 Book Now <GoArrowUpRight />
               </Button>

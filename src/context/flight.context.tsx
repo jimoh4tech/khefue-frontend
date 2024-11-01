@@ -16,6 +16,7 @@ export const FlightProvider = ({ children }: { children: ReactNode }) => {
   >([]);
   const [searchObj, setSearchObj] = useState<FlightSearchProps | null>(null);
   const [sessionId, setSessionId] = useState<string>("");
+  const [selectedItenary, setSelectedItenary] = useState<number>(0);
 
   const setAirItenaryFlightInfo = (
     newItineraries: FareItineraries[] | null
@@ -33,8 +34,10 @@ export const FlightProvider = ({ children }: { children: ReactNode }) => {
       setSearchObj,
       sessionId,
       setSessionId,
+      selectedItenary,
+      setSelectedItenary,
     }),
-    [airItenaryFlightInfo, searchObj, sessionId]
+    [airItenaryFlightInfo, searchObj, selectedItenary, sessionId]
   );
 
   return (

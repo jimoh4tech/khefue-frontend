@@ -13,3 +13,16 @@ export const getFlightClassFromCabinCode = (code: string) => {
       return "Invalid";
   }
 };
+export const getPassengerTypeFromCode = (code: string) => {
+  switch (code) {
+    case "ADT":
+      return "Adult";
+    case "CHD":
+      return "Child";
+    case "INF":
+      return "Infact";
+
+    default:
+      return "Invalid";
+  }
+};

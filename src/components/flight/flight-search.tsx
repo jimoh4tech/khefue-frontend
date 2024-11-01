@@ -32,8 +32,8 @@ export const FlightSearch = () => {
       returnDate: searchObj?.returnDate || "",
       airportDestinationCode: searchObj?.airportDestinationCode || null,
       class: searchObj?.class || "Economy",
-      adults: searchObj?.adults || "1",
-      childs: searchObj?.childs || "0",
+      adults: searchObj?.adults || "2",
+      childs: searchObj?.childs || "1",
       infants: searchObj?.infants || "0",
     },
     async onSubmit(values) {
@@ -78,7 +78,6 @@ export const FlightSearch = () => {
           error?.response?.data?.message ==
           "Flights not found for the given search condition."
         ) {
-          setAirItenaryFlightInfo([]);
           toaster.create({
             title: `Flights not found for the given search condition.`,
             type: "info",
@@ -88,6 +87,7 @@ export const FlightSearch = () => {
             title: `Invalid search parameter. Kindly retry!`,
             type: "error",
           });
+          setAirItenaryFlightInfo([]);
         }
       }
       if (window.location.pathname.includes("/travel")) {
