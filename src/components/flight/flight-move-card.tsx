@@ -1,4 +1,4 @@
-import { Flex, Separator, Text } from "@chakra-ui/react";
+import { Flex, Image, Separator, Text } from "@chakra-ui/react";
 import { Avatar } from "../ui/avatar";
 import { StepsItem, StepsList, StepsRoot } from "../ui/steps";
 import { VscCircle } from "react-icons/vsc";
@@ -14,6 +14,7 @@ import {
 } from "../../utils/date-format";
 import { getFlightClassFromCabinCode } from "../../utils/flight";
 import { getAirportDetailsFromCode } from "../../utils/airport-list";
+import { getAirLineImageUrl } from "../../utils/airline-list";
 
 export const FlightMoveCard = ({
   originDestinationOptions,
@@ -22,7 +23,14 @@ export const FlightMoveCard = ({
 }) => {
   return (
     <Flex justifyContent={"space-between"} w={"full"} gap={5}>
-      <Avatar src="/images/res.svg" hideBelow={"sm"} />
+      <Image
+        src={`${getAirLineImageUrl(
+          originDestinationOptions?.OriginDestinationOption[0]?.FlightSegment
+            ?.MarketingAirlineName
+        )}`}
+        w={"90px"}
+        hideBelow={"sm"}
+      />
       <Flex direction={"column"} gap={2} alignItems={"center"}>
         <Text fontSize={"xs"} fontWeight={"bold"}>
           {formatDateToTime(
@@ -98,7 +106,15 @@ export const FlightSegementCard = ({
         <StepsList>
           <StepsItem
             index={0}
-            icon={<Avatar src="/images/res.svg" size={"xs"} p={1} />}
+            icon={
+              <Avatar
+                src={`${getAirLineImageUrl(
+                  originDestinationOption?.FlightSegment?.MarketingAirlineName
+                )}`}
+                size={"xs"}
+                p={1}
+              />
+            }
           />
           <StepsItem
             index={1}

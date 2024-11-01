@@ -7,12 +7,14 @@ import { GoArrowUpRight } from "react-icons/go";
 import { Button } from "../ui/button";
 import { FareItineraries } from "../../interface/flight.interface";
 import { formatToNaira } from "../../utils/currrent-format";
+import { useNavigate } from "react-router-dom";
 
 export const FlightItenaryInfo = ({
   fairItenary,
 }: {
   fairItenary: FareItineraries;
 }) => {
+  const navigate = useNavigate();
   if (!fairItenary) return <></>;
   return (
     <Flex py={5}>
@@ -88,7 +90,11 @@ export const FlightItenaryInfo = ({
               )
             )}
             <Flex justifyContent={"end"}>
-              <Button bg={"#370B6F"} color={"white"}>
+              <Button
+                bg={"#370B6F"}
+                color={"white"}
+                onClick={() => navigate("/flight/checkout")}
+              >
                 Book Now <GoArrowUpRight />
               </Button>
             </Flex>

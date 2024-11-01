@@ -161,3 +161,29 @@ export const defaultValues: FlightContextType = {
   setSearchObj: () => {},
   setSessionId: () => {},
 };
+export interface FlightPassengerType {
+  title: string[];
+  firstName: string[];
+  lastName: string[];
+  dob: string[];
+  nationality: string[];
+  passportNo: string[];
+  passportIssueCountry: string[];
+  passportExpiryDate: string[];
+  ExtraServiceOutbound: string[];
+  ExtraServiceInbound: string[];
+}
+export interface PaxDetails {
+  adult: FlightPassengerType;
+  child: FlightPassengerType;
+  infant: FlightPassengerType;
+}
+
+export interface FlightBookingInfo {
+  clientRef?: string;
+  postCode?: string;
+  customerEmail: string;
+  customerPhone: string;
+  bookingNote?: string;
+  paxDetails: PaxDetails;
+}

@@ -1,9 +1,4 @@
 import { Flex, Separator, Stack, Text } from "@chakra-ui/react";
-import {
-  BreadcrumbCurrentLink,
-  BreadcrumbLink,
-  BreadcrumbRoot,
-} from "../components/ui/breadcrumb";
 import { FlightSearch } from "../components/flight/flight-search";
 import {
   NativeSelectField,
@@ -69,12 +64,6 @@ export const FlightPage = () => {
   console.log(init);
   return (
     <Flex direction="column">
-      <BreadcrumbRoot bg={"#F4ECFF"} py={5} px={5} lg={{ px: "10" }}>
-        <BreadcrumbLink href="#">Choose departing flight</BreadcrumbLink>
-        <BreadcrumbLink href="#">Choose returning flight </BreadcrumbLink>
-        <BreadcrumbLink href="#">Review your trip </BreadcrumbLink>
-        <BreadcrumbCurrentLink>Choose pricing option</BreadcrumbCurrentLink>
-      </BreadcrumbRoot>
       <Flex
         py={5}
         px={5}
