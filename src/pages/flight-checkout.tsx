@@ -5,8 +5,6 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
 } from "../components/ui/accordion";
-import { MdAirlineSeatReclineNormal } from "react-icons/md";
-import { IoPersonSharp } from "react-icons/io5";
 import { TbLuggage } from "react-icons/tb";
 import { useFlightItenary } from "../hooks/flight.hooks";
 import { getAirportCityFromCode } from "../utils/airport-list";
@@ -30,13 +28,23 @@ export const FlightCheckout = () => {
   const fairItenary = airItenaryFlightInfo
     ? airItenaryFlightInfo[selectedItenary]
     : null;
+  const travellers: number[] | undefined =
+    fairItenary?.FareItinerary?.AirItineraryFareInfo?.FareBreakdown?.map(
+      (fare) => fare?.PassengerTypeQuantity.Quantity
+    );
+  console.log(travellers, [...Array(travellers ? travellers[3] : 0)]);
 
   if (!fairItenary) return <>This is empty</>;
   return (
-    <Flex direction={"column"} py={10}>
-      <Flex p={5} gap={5}>
+    <Flex direction={"column"} py={3} md={{ py: "10" }}>
+      <Flex
+        p={5}
+        gap={5}
+        direction={"column-reverse"}
+        md={{ flexDirection: "row" }}
+      >
         <Flex
-          flex={1}
+          flexShrink={0}
           direction={"column"}
           bg={"#F4ECFF"}
           py={3}
@@ -128,32 +136,35 @@ export const FlightCheckout = () => {
             border={"1px solid gray"}
           >
             <Text fontSize={"xs"}>Total Points</Text>
-            <Text fontSize={"xs"}>₦2,180,494</Text>
+            <Text fontSize={"xs"}>674</Text>
           </Flex>
         </Flex>
-        <Flex flex={4} bg={"#F4ECFF"} py={3} px={5}>
+        <Flex flex={1} bg={"#F4ECFF"} py={3} px={5}>
           <AccordionRoot collapsible defaultValue={["b"]}>
             <FlightCheckoutLuggageItem fairItenary={fairItenary} />
-            <FlightCheckoutAdultItem index={1} />
-            <AccordionItem value={"adult2"}>
-              <AccordionItemTrigger>
-                <IoPersonSharp size={"35px"} color="gray" />
-                <Flex direction={"column"}>
-                  <Text
-                    fontSize={"xs"}
-                    fontWeight={"semibold"}
-                    color={"gray.800"}
-                  >
-                    Adult 2
-                  </Text>
-                  <Text fontSize={"x-small"} color={"gray.500"}>
-                    +12 years old
-                  </Text>
-                </Flex>
-              </AccordionItemTrigger>
-              <AccordionItemContent>{"This si"}</AccordionItemContent>
-            </AccordionItem>
-            <AccordionItem value={"luggae"}>
+            {travellers &&
+              travellers[0] &&
+              [...Array(travellers ? travellers[1] : 0)]
+                .map((_, i) => i + 1)
+                .map((val) => (
+                  <FlightCheckoutAdultItem value={`Adult ${val}`} />
+                ))}
+            {travellers &&
+              travellers[1] &&
+              [...Array(travellers[1])]
+                .map((_, i) => i + 1)
+                .map((val) => (
+                  <FlightCheckoutAdultItem value={`Child ${val}`} />
+                ))}
+            {travellers &&
+              travellers[2] &&
+              [...Array(travellers[2])]
+                .map((_, i) => i + 1)
+                .map((val) => (
+                  <FlightCheckoutAdultItem value={`Infact ${val}`} />
+                ))}
+
+            <AccordionItem value={"luggage"}>
               <AccordionItemTrigger>
                 <TbLuggage size={"35px"} color="gray" />
                 <Flex direction={"column"}>
@@ -169,25 +180,26 @@ export const FlightCheckout = () => {
                   </Text>
                 </Flex>
               </AccordionItemTrigger>
-              <AccordionItemContent>{"This si"}</AccordionItemContent>
-            </AccordionItem>
-            <AccordionItem value={"seat"}>
-              <AccordionItemTrigger>
-                <MdAirlineSeatReclineNormal size={"35px"} color="gray" />
-                <Flex direction={"column"}>
-                  <Text
-                    fontSize={"xs"}
-                    fontWeight={"semibold"}
-                    color={"gray.800"}
-                  >
-                    Select seats
-                  </Text>
-                  <Text fontSize={"x-small"} color={"gray.500"}>
-                    Choose your seats
-                  </Text>
+              <AccordionItemContent>
+                <Flex direction={"column"} gap={3}>
+                  <Flex justifyContent={"space-between"} w={"full"}>
+                    <Text fontSize={"xs"} color={"gray.700"}>
+                      Baggage
+                    </Text>
+                    <Text fontSize={"xs"} color={"gray.700"}>
+                      2PC
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent={"space-between"} w={"full"}>
+                    <Text fontSize={"xs"} color={"gray.700"}>
+                      Cabin Baggage
+                    </Text>
+                    <Text fontSize={"xs"} color={"gray.700"}>
+                      7KG
+                    </Text>
+                  </Flex>
                 </Flex>
-              </AccordionItemTrigger>
-              <AccordionItemContent>{"This si"}</AccordionItemContent>
+              </AccordionItemContent>
             </AccordionItem>
           </AccordionRoot>
         </Flex>

@@ -12,6 +12,7 @@ import { FlightInfoCard } from "./flight-move-card";
 import { IoPersonSharp } from "react-icons/io5";
 import { Field } from "../ui/field";
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
+import { getAgeBracketValue, getTitleArray } from "../../utils/flight";
 
 export const FlightCheckoutLuggageItem = ({
   fairItenary,
@@ -53,11 +54,11 @@ export const FlightCheckoutLuggageItem = ({
       <AccordionItemContent>
         {fairItenary?.FareItinerary?.OriginDestinationOptions.map(
           (origin, idx) => (
-            <Stack key={idx + Math.random()} gap={5}>
+            <Stack key={(idx + 8) * Math.random()} gap={5}>
               {origin.OriginDestinationOption.map((sub, i) => (
                 <>
                   <FlightInfoCard
-                    key={i * (idx + Math.random())}
+                    key={(idx + 8 - i) * Math.random()}
                     originDestinationOption={sub}
                   />
                   <Separator />
@@ -71,23 +72,29 @@ export const FlightCheckoutLuggageItem = ({
   );
 };
 
-export const FlightCheckoutAdultItem = ({ index }: { index: number }) => {
+export const FlightCheckoutAdultItem = ({ value }: { value: string }) => {
   return (
-    <AccordionItem value={`Adult-${index}`}>
+    <AccordionItem value={value}>
       <AccordionItemTrigger>
         <IoPersonSharp size={"35px"} color="gray" />
         <Flex direction={"column"}>
           <Text fontSize={"xs"} fontWeight={"semibold"} color={"gray.800"}>
-            {`Adult ${index}`}
+            {value}
           </Text>
           <Text fontSize={"x-small"} color={"gray.500"}>
-            +12 years old
+            {getAgeBracketValue(value)}
           </Text>
         </Flex>
       </AccordionItemTrigger>
       <AccordionItemContent>
         <Flex gap={5} direction={"column"}>
-          <Flex justifyContent={"space-between"} w={"full"} gap={10}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"full"}
+            gap={1}
+            md={{ gap: "10" }}
+            alignItems={"center"}
+          >
             <Field label="First Name" color={"gray.500"}>
               <Input placeholder="Thomas" bg={"white"} size={"sm"} />
             </Field>
@@ -95,7 +102,13 @@ export const FlightCheckoutAdultItem = ({ index }: { index: number }) => {
               <Input placeholder="Smith" bg={"white"} size={"sm"} />
             </Field>
           </Flex>
-          <Flex justifyContent={"space-between"} w={"full"} gap={10}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"full"}
+            gap={1}
+            md={{ gap: "10" }}
+            alignItems={"center"}
+          >
             <Field label="Email Address" color={"gray.500"}>
               <Input
                 placeholder="Thomassmith@google.com"
@@ -107,7 +120,13 @@ export const FlightCheckoutAdultItem = ({ index }: { index: number }) => {
               <Input type="tel" bg={"white"} size={"sm"} />
             </Field>
           </Flex>
-          <Flex justifyContent={"space-between"} w={"full"} gap={10}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"full"}
+            gap={1}
+            md={{ gap: "10" }}
+            alignItems={"center"}
+          >
             <Field label="Passport Issue Country" color={"gray.500"}>
               <NativeSelectRoot>
                 <NativeSelectField
@@ -125,7 +144,13 @@ export const FlightCheckoutAdultItem = ({ index }: { index: number }) => {
               <Input type="date" bg={"white"} size={"sm"} />
             </Field>
           </Flex>
-          <Flex justifyContent={"space-between"} w={"full"} gap={10}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"full"}
+            gap={1}
+            md={{ gap: "10" }}
+            alignItems={"center"}
+          >
             <Field label="Country" color={"gray.500"}>
               <NativeSelectRoot>
                 <NativeSelectField
@@ -143,13 +168,19 @@ export const FlightCheckoutAdultItem = ({ index }: { index: number }) => {
               <NativeSelectRoot>
                 <NativeSelectField
                   name="title"
-                  items={["Mr", "Mrs", "Miss"]}
+                  items={getTitleArray(value)}
                   bg={"white"}
                 />
               </NativeSelectRoot>
             </Field>
           </Flex>
-          <Flex justifyContent={"space-between"} w={"full"} gap={10}>
+          <Flex
+            justifyContent={"space-between"}
+            w={"full"}
+            gap={1}
+            md={{ gap: "10" }}
+            alignItems={"center"}
+          >
             <Field label="Passport Number" color={"gray.500"}>
               <Input placeholder="5467455" bg={"white"} size={"sm"} />
             </Field>

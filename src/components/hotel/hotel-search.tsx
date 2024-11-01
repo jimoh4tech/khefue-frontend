@@ -10,7 +10,6 @@ import {
   PopoverRoot,
   PopoverTrigger,
 } from "../ui/popover";
-import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
 import { useFormik } from "formik";
 import { searchFlight } from "../../services/flight.services";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ import { AIRPORT_LIST_OPTION } from "../../utils/airport-list";
 import { toaster } from "../ui/toaster";
 import { CustomStepperInput } from "../custom/stepperInput";
 
-export const FlightSearch = () => {
+export const HotelSearch = () => {
   const { setAirItenaryFlightInfo, setSearchObj, setSessionId, searchObj } =
     useFlightItenary();
   const navigate = useNavigate();
@@ -100,10 +99,6 @@ export const FlightSearch = () => {
   const handleAirportOriginCodeChange = (selectedOption: any) => {
     formik.setFieldValue("airportOriginCode", selectedOption?.value); // Ensure formik is setting the correct value
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleAirportDestinationCodeChange = (selectedOption: any) => {
-    formik.setFieldValue("airportDestinationCode", selectedOption?.value); // Ensure formik is setting the correct value
-  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -128,7 +123,7 @@ export const FlightSearch = () => {
           >
             <Flex direction="column" gap={2}>
               <Text fontWeight={"semibold"} fontSize={"sm"}>
-                Flying From
+                Location
               </Text>
               <SearchableSelect
                 options={AIRPORT_LIST_OPTION}
@@ -137,19 +132,8 @@ export const FlightSearch = () => {
                 value={formik.values.airportOriginCode}
               />
             </Flex>
-            <Separator orientation="vertical" height="16" hideBelow={"sm"} />
             <Separator hideFrom={"sm"} />
-            <Flex direction="column" gap={2}>
-              <Text fontWeight={"semibold"} fontSize={"sm"}>
-                Flying To
-              </Text>
-              <SearchableSelect
-                options={AIRPORT_LIST_OPTION}
-                onChange={handleAirportDestinationCodeChange}
-                name="airportDestinationCode"
-                value={formik.values.airportDestinationCode}
-              />
-            </Flex>
+
             <Separator orientation="vertical" height="16" hideBelow={"lg"} />
           </Flex>
           <Separator hideFrom={"lg"} />
@@ -162,7 +146,7 @@ export const FlightSearch = () => {
           >
             <Flex direction="column" gap={2}>
               <Text fontWeight={"semibold"} fontSize={"sm"}>
-                Depart
+                Check in
               </Text>
               <Input
                 type="date"
@@ -183,7 +167,7 @@ export const FlightSearch = () => {
               }`}
             >
               <Text fontWeight={"semibold"} fontSize={"sm"}>
-                Return
+                Check out
               </Text>
               <Input
                 type="date"
@@ -214,15 +198,12 @@ export const FlightSearch = () => {
             />
             <Flex direction="column" gap={2}>
               <Text fontWeight={"semibold"} fontSize={"sm"}>
-                Travellers
+                Guest
               </Text>
               <PopoverRoot>
                 <PopoverTrigger asChild>
                   <Button size="xs" variant="outline">
-                    {Number(formik.values.adults) +
-                      Number(formik.values.childs) +
-                      Number(formik.values.infants)}{" "}
-                    Travellers
+                    {`${formik.values.adults} adults - ${formik.values.childs} childs - ${formik.values.infants} room`}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -260,7 +241,7 @@ export const FlightSearch = () => {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                       >
-                        <Text fontSize={"sm"}>Infacts</Text>
+                        <Text fontSize={"sm"}>Room</Text>
 
                         <CustomStepperInput
                           name="infants"
@@ -288,32 +269,6 @@ export const FlightSearch = () => {
           >
             <IoSearch color="white" /> Search
           </Button>
-        </Flex>
-        <Flex gap={2}>
-          <NativeSelectRoot size="sm" width="140px">
-            <NativeSelectField
-              name="journeyType"
-              value={formik.values.journeyType}
-              onChange={formik.handleChange}
-              color={"gray.400"}
-              border={"none"}
-            >
-              <option value="Return">Return</option>
-              <option value="OneWay">OneWay</option>
-            </NativeSelectField>
-          </NativeSelectRoot>
-          <NativeSelectRoot size="sm" width="140px">
-            <NativeSelectField
-              name="class"
-              value={formik.values.class}
-              onChange={formik.handleChange}
-              color={"gray.400"}
-              border={"none"}
-            >
-              <option value="Economy">Economy</option>
-              <option value="First">First</option>
-            </NativeSelectField>
-          </NativeSelectRoot>
         </Flex>
       </Flex>
     </form>

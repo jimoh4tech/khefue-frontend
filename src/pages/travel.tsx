@@ -1,5 +1,8 @@
 import { Flex, Heading, Image, Tabs, Text } from "@chakra-ui/react";
 import { FlightSearch } from "../components/flight/flight-search";
+import { HotelSearch } from "../components/hotel/hotel-search";
+import { PackageSearch } from "../components/package/package-search";
+import { CarRentalSeach } from "../components/car-rental/car-rental-search";
 
 export const TravelPage = () => {
   return (
@@ -46,9 +49,15 @@ export const TravelPage = () => {
           <Tabs.Content value="flight">
             <FlightSearch />
           </Tabs.Content>
-          <Tabs.Content value="hotel">Tab 2: Content</Tabs.Content>
-          <Tabs.Content value="package">Tab 3: Content</Tabs.Content>
-          <Tabs.Content value="car">Tab 4: Content</Tabs.Content>
+          <Tabs.Content value="hotel">
+            <HotelSearch />
+          </Tabs.Content>
+          <Tabs.Content value="package">
+            <PackageSearch />
+          </Tabs.Content>
+          <Tabs.Content value="car">
+            <CarRentalSeach />
+          </Tabs.Content>
         </Tabs.Root>
       </Flex>
       <Flex

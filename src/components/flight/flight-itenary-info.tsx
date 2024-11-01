@@ -37,7 +37,7 @@ export const FlightItenaryInfo = ({
         navigate("/flight/checkout");
       } else {
         toaster.create({
-          description: "Unable to verify flight at the moment.",
+          description: "Flight not available, Kindly select other deals.",
           type: "error",
         });
         setLoading(false);
@@ -46,7 +46,7 @@ export const FlightItenaryInfo = ({
     } catch (error: any) {
       console.log(error);
       toaster.create({
-        description: "Flight not available",
+        description: "Flight not available, Kindly select other deals",
         type: "error",
       });
       setLoading(false);
