@@ -19,9 +19,12 @@ import {
   FlightCheckoutAdultItem,
   FlightCheckoutLuggageItem,
 } from "../components/flight/flight-checkout-items";
+import { toaster } from "../components/ui/toaster";
+import { useState } from "react";
 
 export const FlightCheckout = () => {
   const { selectedItenary, airItenaryFlightInfo } = useFlightItenary();
+  const [loading, setLoading] = useState(false);
   console.log(
     airItenaryFlightInfo ? airItenaryFlightInfo[selectedItenary] : null
   );
@@ -33,6 +36,17 @@ export const FlightCheckout = () => {
       (fare) => fare?.PassengerTypeQuantity.Quantity
     );
   console.log(travellers, [...Array(travellers ? travellers[3] : 0)]);
+
+  const handleCompleteBooking = () => {
+    setLoading(true);
+    setTimeout(() => {
+      toaster.create({
+        title: `Unable to complete booking at the moment, try again later!`,
+        type: "error",
+      });
+      setLoading(false);
+    }, 5000);
+  };
 
   if (!fairItenary) return <>This is empty</>;
   return (
@@ -205,7 +219,12 @@ export const FlightCheckout = () => {
         </Flex>
       </Flex>
       <Flex justifyContent={"flex-end"} px={5}>
-        <Button bg={"#370B6F"} color={"white"}>
+        <Button
+          bg={"#370B6F"}
+          color={"white"}
+          onClick={handleCompleteBooking}
+          loading={loading}
+        >
           Complete Booking and Pay
           <FaArrowRight />
         </Button>
