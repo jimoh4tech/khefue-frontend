@@ -5,7 +5,7 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
 } from "../components/ui/accordion";
-import { MdAirlineSeatReclineNormal, MdAirplaneTicket } from "react-icons/md";
+import { MdAirlineSeatReclineNormal } from "react-icons/md";
 import { IoPersonSharp } from "react-icons/io5";
 import { TbLuggage } from "react-icons/tb";
 import { useFlightItenary } from "../hooks/flight.hooks";
@@ -17,6 +17,10 @@ import {
 import { formatToNaira } from "../utils/currrent-format";
 import { Button } from "../components/ui/button";
 import { FaArrowRight } from "react-icons/fa";
+import {
+  FlightCheckoutAdultItem,
+  FlightCheckoutLuggageItem,
+} from "../components/flight/flight-checkout-items";
 
 export const FlightCheckout = () => {
   const { selectedItenary, airItenaryFlightInfo } = useFlightItenary();
@@ -42,8 +46,8 @@ export const FlightCheckout = () => {
           <Text fontWeight={"bold"}>My Cart</Text>
           <Text fontSize={"xs"}>Flight tickets</Text>
           {fairItenary?.FareItinerary?.OriginDestinationOptions?.map(
-            (origin) => (
-              <Stack gap={0}>
+            (origin, idx) => (
+              <Stack gap={0} key={idx}>
                 <Text fontSize={"xs"} fontWeight={"semibold"}>
                   {`${getAirportCityFromCode(
                     origin?.OriginDestinationOption[0]?.FlightSegment
@@ -69,8 +73,8 @@ export const FlightCheckout = () => {
           </Text>
           <Stack gap={1}>
             {fairItenary?.FareItinerary?.AirItineraryFareInfo?.FareBreakdown?.map(
-              (fare) => (
-                <Text fontSize={"xs"}>
+              (fare, idx) => (
+                <Text fontSize={"xs"} key={idx}>
                   {`${getPassengerTypeFromCode(
                     fare?.PassengerTypeQuantity?.Code
                   )} x ${fare?.PassengerTypeQuantity.Quantity}`}
@@ -129,42 +133,8 @@ export const FlightCheckout = () => {
         </Flex>
         <Flex flex={4} bg={"#F4ECFF"} py={3} px={5}>
           <AccordionRoot collapsible defaultValue={["b"]}>
-            <AccordionItem value={"flight"}>
-              <AccordionItemTrigger>
-                <MdAirplaneTicket size={"35px"} color="gray" />
-                <Flex direction={"column"}>
-                  <Text
-                    fontSize={"xs"}
-                    fontWeight={"semibold"}
-                    color={"gray.800"}
-                  >
-                    Lagos - New York
-                  </Text>
-                  <Text fontSize={"x-small"} color={"gray.500"}>
-                    Fri May 17 LKPR - Madekyt | Fri May 31 EKYT - LKPR
-                  </Text>
-                </Flex>
-              </AccordionItemTrigger>
-              <AccordionItemContent>{"This si"}</AccordionItemContent>
-            </AccordionItem>
-            <AccordionItem value={"adult1"}>
-              <AccordionItemTrigger>
-                <IoPersonSharp size={"35px"} color="gray" />
-                <Flex direction={"column"}>
-                  <Text
-                    fontSize={"xs"}
-                    fontWeight={"semibold"}
-                    color={"gray.800"}
-                  >
-                    Adult 1
-                  </Text>
-                  <Text fontSize={"x-small"} color={"gray.500"}>
-                    +12 years old
-                  </Text>
-                </Flex>
-              </AccordionItemTrigger>
-              <AccordionItemContent>{"This si"}</AccordionItemContent>
-            </AccordionItem>
+            <FlightCheckoutLuggageItem fairItenary={fairItenary} />
+            <FlightCheckoutAdultItem index={1} />
             <AccordionItem value={"adult2"}>
               <AccordionItemTrigger>
                 <IoPersonSharp size={"35px"} color="gray" />
@@ -222,7 +192,7 @@ export const FlightCheckout = () => {
           </AccordionRoot>
         </Flex>
       </Flex>
-      <Flex justifyContent={"flex-end"}>
+      <Flex justifyContent={"flex-end"} px={5}>
         <Button bg={"#370B6F"} color={"white"}>
           Complete Booking and Pay
           <FaArrowRight />

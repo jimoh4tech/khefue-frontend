@@ -88,6 +88,56 @@ export const FlightMoveCard = ({
   );
 };
 
+export const FlightInfoCard = ({
+  originDestinationOption,
+}: {
+  originDestinationOption: OriginDestinationOption;
+}) => {
+  return (
+    <Flex flex={8} w={"full"} direction={"column"} gap={5}>
+      <Flex justifyContent={"space-between"} w={"full"}>
+        <Text fontSize={"sm"} color={"gray.400"}>
+          {`${originDestinationOption?.FlightSegment?.MarketingAirlineName} ${originDestinationOption?.FlightSegment?.FlightNumber}`}
+        </Text>
+        <Text fontSize={"sm"} color={"gray.400"}>
+          {getFlightClassFromCabinCode(
+            originDestinationOption?.FlightSegment?.CabinClassCode
+          )}
+        </Text>
+      </Flex>
+      <Flex justifyContent={"space-between"} w={"full"}>
+        <Text fontWeight={"semibold"} fontSize={"xs"}>
+          {`${formatDateTo12Time(
+            originDestinationOption?.FlightSegment?.DepartureDateTime
+          )} ${getAirportDetailsFromCode(
+            originDestinationOption?.FlightSegment?.DepartureAirportLocationCode
+          )}`}
+        </Text>
+      </Flex>
+      <Flex justifyContent={"space-between"} w={"full"}>
+        <Text fontSize={"sm"} color={"gray.400"}>
+          {formatDateIntervalToHours(
+            originDestinationOption?.FlightSegment?.DepartureDateTime,
+            originDestinationOption?.FlightSegment?.ArrivalDateTime
+          )}
+        </Text>
+        <Text fontWeight={"semibold"} fontSize={"xs"}>
+          {originDestinationOption?.FlightSegment?.Eticket ? "Eticket" : ""}
+        </Text>
+      </Flex>
+      <Flex justifyContent={"space-between"} w={"full"}>
+        <Text fontWeight={"semibold"} fontSize={"xs"}>
+          {`${formatDateTo12Time(
+            originDestinationOption?.FlightSegment?.ArrivalDateTime
+          )} ${getAirportDetailsFromCode(
+            originDestinationOption?.FlightSegment?.ArrivalAirportLocationCode
+          )}`}
+        </Text>
+      </Flex>
+    </Flex>
+  );
+};
+
 export const FlightSegementCard = ({
   originDestinationOption,
 }: {
@@ -123,7 +173,8 @@ export const FlightSegementCard = ({
           <StepsItem index={2} icon={<VscCircle size={"10px"} />} />
         </StepsList>
       </StepsRoot>
-      <Flex flex={8} w={"full"} direction={"column"} gap={5}>
+      <FlightInfoCard originDestinationOption={originDestinationOption} />
+      {/* <Flex flex={8} w={"full"} direction={"column"} gap={5}>
         <Flex justifyContent={"space-between"} w={"full"}>
           <Text fontSize={"sm"} color={"gray.400"}>
             {`${originDestinationOption?.FlightSegment?.MarketingAirlineName} ${originDestinationOption?.FlightSegment?.FlightNumber}`}
@@ -164,7 +215,7 @@ export const FlightSegementCard = ({
             )}`}
           </Text>
         </Flex>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
