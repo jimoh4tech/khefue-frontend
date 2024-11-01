@@ -4,6 +4,7 @@ import { TravelPage } from "../pages/travel";
 import { FlightPage } from "../pages/flight";
 import { FlightProvider } from "../context/flight.context";
 import { FlightCheckout } from "../pages/flight-checkout";
+import { Home } from "../pages/home";
 
 const FlightProviderWrapper = () => (
   <FlightProvider>
@@ -15,6 +16,7 @@ export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
         <Route element={<FlightProviderWrapper />}>
           <Route path="/travel" element={<TravelPage />} />
           <Route path="/flight" element={<FlightPage />} />
