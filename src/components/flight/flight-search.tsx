@@ -10,7 +10,6 @@ import {
   PopoverRoot,
   PopoverTrigger,
 } from "../ui/popover";
-import { StepperInput } from "../ui/stepper-input";
 import { NativeSelectField, NativeSelectRoot } from "../ui/native-select";
 import { useFormik } from "formik";
 import { searchFlight } from "../../services/flight.services";
@@ -18,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useFlightItenary } from "../../hooks/flight.hooks";
 import { AIRPORT_LIST_OPTION } from "../../utils/airport-list";
 import { toaster } from "../ui/toaster";
+import { CustomStepperInput } from "../custom/stepperInput";
 
 export const FlightSearch = () => {
   const { setAirItenaryFlightInfo, setSearchObj, setSessionId, searchObj } =
@@ -32,9 +32,9 @@ export const FlightSearch = () => {
       returnDate: searchObj?.returnDate || "",
       airportDestinationCode: searchObj?.airportDestinationCode || null,
       class: searchObj?.class || "Economy",
-      adults: searchObj?.adults || "2",
-      childs: searchObj?.childs || "1",
-      infants: searchObj?.infants || "0",
+      adults: searchObj?.adults || 2,
+      childs: searchObj?.childs || 1,
+      infants: searchObj?.infants || 0,
     },
     async onSubmit(values) {
       setAirItenaryFlightInfo(null);
@@ -54,9 +54,9 @@ export const FlightSearch = () => {
         };
         if (values?.journeyType === "Return")
           searchObj.OriginDestinationInfo[0].returnDate = values?.returnDate;
-        if (values?.childs && values.childs !== "0")
+        if (values?.childs && values.childs !== 0)
           searchObj.childs = Number(values.childs);
-        if (values?.infants && values.infants !== "0")
+        if (values?.infants && values.infants !== 0)
           searchObj.infants = Number(values.infants);
         console.log({ searchObj });
         setSearchObj(values);
@@ -234,12 +234,12 @@ export const FlightSearch = () => {
                         alignItems={"center"}
                       >
                         <Text fontSize={"sm"}>Adults</Text>
-                        <StepperInput
-                          size={"xs"}
-                          min={1}
+                        <CustomStepperInput
                           name="adults"
-                          // value={formik.values.adults}
-                          // onChange={(val) => formik.setFieldValue("adults", val)}
+                          value={formik.values.adults}
+                          onChange={(val) =>
+                            formik.setFieldValue("adults", val)
+                          }
                         />
                       </Flex>
                       <Flex
@@ -247,12 +247,13 @@ export const FlightSearch = () => {
                         alignItems={"center"}
                       >
                         <Text fontSize={"sm"}>Children</Text>
-                        <StepperInput
-                          size={"xs"}
-                          min={1}
+
+                        <CustomStepperInput
                           name="childs"
-                          // value={formik.values.childs}
-                          // onChange={formik.handleChange}
+                          value={formik.values.childs}
+                          onChange={(val) =>
+                            formik.setFieldValue("childs", val)
+                          }
                         />
                       </Flex>
                       <Flex
@@ -260,12 +261,13 @@ export const FlightSearch = () => {
                         alignItems={"center"}
                       >
                         <Text fontSize={"sm"}>Infacts</Text>
-                        <StepperInput
-                          size={"xs"}
-                          min={1}
+
+                        <CustomStepperInput
                           name="infants"
-                          // value={formik.values.infants}
-                          // onChange={formik.handleChange}
+                          value={formik.values.infants}
+                          onChange={(val) =>
+                            formik.setFieldValue("infants", val)
+                          }
                         />
                       </Flex>
                     </Flex>

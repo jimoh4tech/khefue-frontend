@@ -28,9 +28,9 @@ export interface FlightSearchProps {
   returnDate: string;
   airportDestinationCode: AirportOption | null;
   class: string;
-  adults: string;
-  childs: string;
-  infants: string;
+  adults: number;
+  childs: number;
+  infants: number;
 }
 
 export interface FlightSegment {

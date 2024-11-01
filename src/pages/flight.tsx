@@ -4,11 +4,6 @@ import {
   NativeSelectField,
   NativeSelectRoot,
 } from "../components/ui/native-select";
-import { useSearchParams } from "react-router-dom";
-import {
-  AirportOption,
-  FlightSearchProps,
-} from "../interface/flight.interface";
 import { FlightFilter } from "../components/flight/flight-filter";
 import { FlightItenaryInfo } from "../components/flight/flight-itenary-info";
 import { useFlightItenary } from "../hooks/flight.hooks";
@@ -39,29 +34,8 @@ export const EmptyFlight = () => {
 };
 
 export const FlightPage = () => {
-  const [searchParams] = useSearchParams();
   const { airItenaryFlightInfo } = useFlightItenary();
-  // const [sessionID, setSessionID] = useState("");
-  // const [];
-  const init: FlightSearchProps = {
-    requiredCurrency: searchParams.get("requiredCurrency") || "NGN",
-    journeyType: searchParams.get("journeyType") || "Return",
-    departureDate: searchParams.get("departureDate") || "",
-    airportOriginCode:
-      (searchParams.get("airportOriginCode") as unknown as AirportOption) ||
-      null,
-    returnDate: searchParams.get("returnDate") || "",
-    airportDestinationCode:
-      (searchParams.get(
-        "airportDestinationCode"
-      ) as unknown as AirportOption) || null,
-    class: searchParams.get("class") || "Economy",
-    adults: searchParams.get("adults") || "1",
-    childs: searchParams.get("childs") || "1",
-    infants: searchParams.get("infants") || "1",
-  };
 
-  console.log(init);
   return (
     <Flex direction="column">
       <Flex

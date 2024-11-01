@@ -31,16 +31,14 @@ export const FlightItenaryInfo = ({
         sessionId,
         fairItenary.FareItinerary.AirItineraryFareInfo.FareSourceCode
       );
-      console.log(
-        valid?.result?.AirRevalidateResponse?.AirRevalidateResult?.IsValid
-      );
+      console.log(valid);
       if (valid?.result?.AirRevalidateResponse?.AirRevalidateResult?.IsValid) {
         setSelectedItenary(index);
         navigate("/flight/checkout");
       } else {
         toaster.create({
           description: "Unable to verify flight at the moment.",
-          type: "info",
+          type: "error",
         });
         setLoading(false);
       }
